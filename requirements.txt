@@ -1,0 +1,15 @@
+flask
+supabase
+groq
+edge-tts
+moviepy
+imageio-ffmpeg
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+python-dotenv
+requests
+APScheduler
+pytz
+praw
+tiktok-api-python
