@@ -19,12 +19,19 @@ from core.video_editor import stitch_video
 
 def create_short(topic: str = None, progress_callback=None) -> bool:
     """
-    Master function for Indigo Insights.
+    Master function for Ashley MindShift.
     """
     def log(msg):
         print(msg)
         if progress_callback:
             progress_callback(msg)
+
+    # ── 0. DB Cleanup (Maintain Free Plan space) ──────────────────────────
+    from core.supabase_db import log_video, update_video_upload, cleanup_old_logs
+    try:
+        cleanup_old_logs(days=3)
+    except Exception as e:
+        print(f"[Cleanup] Failed: {e}")
 
     # Auto-pick topic if not supplied
     if not topic:
@@ -33,7 +40,7 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
         topic = get_next_topic(used_topics=used)
 
     log(f"\n===========================================")
-    log(f"  INDIGO INSIGHTS: {topic[:60]}")
+    log(f"  {CHANNEL_NAME.upper()}: {topic[:60]}")
     log(f"===========================================\n")
 
     # ── 1. Generate Script & Metadata ──────────────────────────────────────
@@ -52,7 +59,6 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
 
     # ── 3. Download B-Roll ─────────────────────────────────────────────────
     log("\n[3/5] Downloading Viral B-Roll...")
-    # Using the keywords generated with "blue aesthetic" suffix
     keywords = content.get('b_roll_keywords', [])
     broll_paths, credits = download_viral_b_roll(keywords, clips_per_keyword=2, progress_callback=progress_callback)
 
@@ -85,14 +91,8 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
     else:
         final_desc += f"\n\n{credits_text}"
 
-    # Save metadata backup
-    meta_path = final_video_path.replace(".mp4", "_metadata.txt")
-    with open(meta_path, "w", encoding="utf-8") as f:
-        f.write(f"Title: {content.get('title')}\n\nDescription:\n{final_desc}\n")
-
     # ── 5. Supabase Logging ────────────────────────────────────────────────
     log("\n[5/5] Logging to Supabase & Uploading to YouTube...")
-    from core.supabase_db import log_video, update_video_upload
     db_record = log_video(
         title=content.get('title', ''),
         topic=topic,
@@ -107,7 +107,6 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
     from core.youtube_uploader import get_authenticated_service, upload_video, find_or_create_playlist, add_video_to_playlist
     youtube_service = get_authenticated_service()
     if youtube_service:
-        # Custom tags for Indigo Insights
         video_tags = keywords + ["Psychology", "Mindset", "Success", "Manipulation", "Shorts"]
         yt_id = upload_video(
             youtube_service,
