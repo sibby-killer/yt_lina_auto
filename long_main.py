@@ -130,6 +130,27 @@ def create_long_video(topic: str = None, progress_callback=None) -> bool:
     else:
         log("YouTube auth not available. Saved locally.")
 
+    # ── 6. Facebook Video Upload ──────────────────────────────────────────
+    from core.facebook_uploader import upload_to_facebook_video
+    from config import os
+    fb_page_id = os.getenv("FACEBOOK_PAGE_ID")
+    fb_token   = os.getenv("FACEBOOK_PAGE_ACCESS_TOKEN")
+    if fb_page_id and fb_token:
+        log("\n[6/7] Distributing to Facebook Video...")
+        upload_to_facebook_video(final_video_path, content.get('title'), fb_page_id, fb_token)
+    else:
+        log("\n[6/7] Skipping Facebook - Credentials not set.")
+
+    # ── 7. TikTok Upload ──────────────────────────────────────────────────
+    from core.tiktok_uploader import upload_to_tiktok
+    tt_cookies = os.getenv("TIKTOK_COOKIES_PATH", "tiktok_cookies.txt")
+    if os.path.exists(tt_cookies):
+        log("\n[7/7] Distributing to TikTok...")
+        # Note: TikTok handles up to 10 min videos now.
+        upload_to_tiktok(final_video_path, content.get('title'), tt_cookies)
+    else:
+        log("\n[7/7] Skipping TikTok - Cookies file not found.")
+
     return True
 
 
