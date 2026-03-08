@@ -9,12 +9,11 @@ else:
     client = None
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  CHANNEL BRAND IDENTITY: ASHLEY MINDSHIFT (The Dark & Deep Edition)
+#  CHANNEL BRAND IDENTITY: ASHLEY MINDSHIFT (Psycholo Secrets Pivot)
 # ─────────────────────────────────────────────────────────────────────────────
 CHANNEL_NAME   = "Ashley MindShift"
 CHANNEL_SLOGAN = "The shadows of the mind revealed."
-Channel_URL = "http://www.youtube.com/@AshleyMindShift"
-HANDLE = "@AshleyMindShift"
+HANDLE         = "@AshleyMindShift"
 SUBSCRIBE_LINE = f"Master your mind. Subscribe to {CHANNEL_NAME} {HANDLE}"
 
 # Dark, mysterious hashtag pool
@@ -26,52 +25,50 @@ BASE_HASHTAGS = (
 
 def generate_video_content(topic: str = "how to read anyone instantly") -> dict | None:
     """
-    Uses Groq Llama-3 to generate high-intensity Dark Psychology scripts.
-    formula: 5s Hook -> 35s Deep Solution/Breakdown -> 10s Scarcity CTA.
+    Uses Groq Llama-3 to generate high-intensity "Psycholo Secrets" style scripts.
+    formula: 15s Hook/Build-up -> 60-70s 3-Step Trick Breakdown -> 10s Scarcity CTA.
+    Total Duration: 80-90 seconds.
     """
     if not client:
         print("Error: GROQ_API_KEY not set.")
         return None
 
     prompt = f"""
-You are the lead storyteller for the YouTube channel "{CHANNEL_NAME}".
-Slogan: "{CHANNEL_SLOGAN}"
-Atmosphere: Dark, eerie, and psychological.
-Goal: Provide a COMPLETE, broken-down solution to a psychological mystery or manipulation trick.
+You are the lead storyteller for "{CHANNEL_NAME}".
+Your style is inspired by "Psycholo Secrets" - fast, high-energy, authoritative, and forbidden.
+Atmosphere: Dark, enigmatic, addictive.
 
-Target: 50-60s Shorts.
+=== CONTENT STRUCTURE: THE PSYCHOLO FORMULA ===
+1. THE VIRAL HOOK (0-2s): A shocking claim.
+   Example: "Three psychological tricks that make anyone obsessed with you."
+2. THE DESIRE / BRIDGE (2-7s): Ask a direct, emotional question.
+   Example: "Want to know how to make someone think about you constantly? How to become the person they can't stop obsessing over?"
+3. THE REALITY CHECK (7-14s): Call out common mistakes.
+   Example: "Most people try too hard. They text too much. They're always available. They chase."
+4. THE CLIMAX SHIFT (14-21s): The "Secret" pivot.
+   Example: "But if you're already following Ashley MindShift's secrets, you know obsession isn't created by being present. It's created by being unpredictable. And I'm about to show you exactly how. Watch this."
+5. THE 3-TRICK BREAKDOWN (21s - 75s):
+   - For each trick: Name it, explain EXACTLY what to do, then explain the "Why" (The Biological/Psychological Addiction).
+   - Trick 1: Give attention, then withdraw it. (Explain brain addiction to attention highs).
+   - Trick 2: Be mysterious. (Explain mystery creates curiosity/obsession).
+   - Trick 3: The Prize/Competition. (Explain humans want what others want).
+6. THE FINAL LESSON & CTA (75s - 90s):
+   - Recap the secret: "Obsession isn't created by being perfect. It's created by being unpredictable."
+   - SCARCITY CTA: "Follow Ashley MindShift secrets now. And learn the dark psychology that makes people addicted to you. If you leave now, you might never find this frequency again."
 
-=== SCRIPT FORMULA: THE DEEP SOLUTION ===
-1. THE SHOCKING HOOK (0-5s): A slow, heavy claim that locks the viewer in.
-   Example: "There is a reason you feel watched in an empty room... and today, you will learn how to own that fear."
-2. THE FULL BREAKDOWN (6-45s): Do not cut it short. Provide a step-by-step breakdown of the solution or method.
-   Explain the "Why", then the "How". Use short, punchy sentences. 
-   Focus on the biological or psychological reality.
-3. THE SCARCITY CTA (46-60s): Deliver a powerful, psychological nudge.
-   EXACT TEXT STYLE: "If you haven't subscribed to {CHANNEL_NAME} yet, this might be the last time you ever see us... Our secrets are for the masters, not the followers. Subscribe now, or remain in the shadows forever."
-
-=== SEO TITLE RULES ===
-- Intense, curious, and professional.
-- EXAMPLE: "The True Solution to Reading Anyone's Mind #DarkPsychology #Mastery #Secrets"
-
-=== DESCRIPTION RULES ===
-- Break down the FACTS in bullet points.
-- Create a sense of "Exclusive Knowledge".
-- {SUBSCRIBE_LINE}
-- {BASE_HASHTAGS}
-
-=== VISUAL B-ROLL KEYWORDS ===
-- Provide EXACTLY 4 keywords. 
-- Must be: DARK, WEIRD, CREATURES, ANIME GIRLS (Dark aesthetic), NO TEXT.
-- Example: "Dark eerie creature in shadows cinematic no text", "Cyberpunk blue eyes girl no captions", "Weird biological organism moving slowly dark background".
+=== VISUAL B-ROLL KEYWORDS (ANIME/CARTOON ONLY) ===
+- Deliver EXACTLY 5 search keywords.
+- Must be: DARK ANIME ANIMATION, CINEMATIC CARTOON, CREEPY ILLUSTRATION, STYLIZED GRAPHICS.
+- NO REAL FOOTAGE. NO TEXT ON SCREEN. 
+- Example keywords: "Dark anime boy with glowing eyes cinematic no text", "Creepy stylized cartoon character lurking in shadows", "Noir anime city rain high contrast", "Stylized brain mapping psychological animation", "Dark anime girl looking mysterious and cold".
 
 === OUTPUT ===
 Return ONLY valid JSON:
 {{
-    "title": "string",
-    "description": "string",
-    "script": "string (spoken words only — use ... for atmospheric pauses)",
-    "b_roll_keywords": ["string", "string", "string", "string"]
+    "title": "Intense Viral Title (e.g. 3 Tricks to Control Anyone)",
+    "description": "Short, bullet-point breakdown of the tricks.",
+    "script": "The full spoken script (Spoken words only). Use pauses as ...",
+    "b_roll_keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"]
 }}
 """
 
@@ -79,17 +76,18 @@ Return ONLY valid JSON:
         response = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}],
             model="llama-3.3-70b-versatile",
-            temperature=0.75,
-            max_tokens=2048,
+            temperature=0.8,
+            max_tokens=3000,
             response_format={"type": "json_object"}
         )
         content_str = response.choices[0].message.content
         return json.loads(content_str)
 
     except Exception as e:
-        print(f"Error generating script: {e}")
+        print(f"[Groq] Error generating script: {e}")
         return None
 
 if __name__ == "__main__":
-    test = generate_video_content("How to gain absolute control in a room")
-    print(json.dumps(test, indent=2))
+    test = generate_video_content("How to make someone obsessed with you")
+    if test:
+        print(json.dumps(test, indent=2))
