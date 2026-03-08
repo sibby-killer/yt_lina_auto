@@ -50,19 +50,30 @@ def download_viral_b_roll(keywords: list, clips_per_keyword: int = 2, progress_c
                     
                 log(f"Downloading clip {j+1}/{clips_per_keyword} for '{keyword}'...")
                 
-                # Stream the MP4 to disk
-                mp4_res = requests.get(play_url, stream=True, timeout=20)
-                mp4_res.raise_for_status()
-                
-                out_path = os.path.join(TEMP_DIR, f'broll_tiktok_{i}_{j}.mp4')
-                with open(out_path, 'wb') as f:
-                    for chunk in mp4_res.iter_content(chunk_size=8192):
-                        f.write(chunk)
-                
-                if os.path.exists(out_path):
-                    downloaded_files.append(out_path)
-                    if author not in credits:
-                        credits.append(f"@{author} (TikTok)")
+                try:
+                    # Stream the MP4 to disk
+                    mp4_res = requests.get(play_url, stream=True, timeout=20)
+                    mp4_res.raise_for_status()
+                    
+                    out_path = os.path.join(TEMP_DIR, f'broll_tiktok_{i}_{j}.mp4')
+                    with open(out_path, 'wb') as f:
+                        for chunk in mp4_res.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                    
+                    # VALIDATION: Check if file exists and has minimum size (100KB)
+                    if os.path.exists(out_path):
+                        file_size = os.path.getsize(out_path)
+                        if file_size < 100 * 1024:
+                            log(f"[TikTok] Rejected small/corrupted file ({file_size} bytes): {out_path}")
+                            if os.path.exists(out_path): os.remove(out_path)
+                            continue
+                        
+                        downloaded_files.append(out_path)
+                        if author not in credits:
+                            credits.append(f"@{author} (TikTok)")
+                except Exception as dl_err:
+                    log(f"[TikTok] Download failed for specific clip: {dl_err}")
+                    continue
                         
         except Exception as e:
             log(f"[TikTok ERROR] Failed to fetch {keyword}: {e}")

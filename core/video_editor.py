@@ -35,43 +35,47 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
         for path in broll_paths:
             if not os.path.exists(path):
                 continue
-                
-            clip = VideoFileClip(path)
             
-            # Duration handling
-            if clip.duration < clip_duration:
-                if MOVIEPY_V2:
-                    clip = clip.with_effects([vfx.Loop(duration=clip_duration)])
-                else:
-                    clip = clip.fx(vfx.loop, duration=clip_duration)
-            else:
-                if MOVIEPY_V2:
-                    clip = clip.subclipped(0, clip_duration) # Correct v2 subclip
-                else:
-                    clip = clip.subclip(0, clip_duration)
+            try:
+                clip = VideoFileClip(path)
                 
-            w, h = clip.size
-            target_ratio = 1080 / 1920.0
-            clip_ratio = w / float(h)
-            
-            if clip_ratio > target_ratio:
-                new_w = h * target_ratio
-                if MOVIEPY_V2:
-                    clip = clip.cropped(x_center=w/2, width=new_w)
+                # Duration handling
+                if clip.duration < clip_duration:
+                    if MOVIEPY_V2:
+                        clip = clip.with_effects([vfx.Loop(duration=clip_duration)])
+                    else:
+                        clip = clip.fx(vfx.loop, duration=clip_duration)
                 else:
-                    clip = clip.crop(x_center=w/2, width=new_w)
-            else:
-                new_h = w / target_ratio
-                if MOVIEPY_V2:
-                    clip = clip.cropped(y_center=h/2, height=new_h)
-                else:
-                    clip = clip.crop(y_center=h/2, height=new_h)
+                    if MOVIEPY_V2:
+                        clip = clip.subclipped(0, clip_duration) # Correct v2 subclip
+                    else:
+                        clip = clip.subclip(0, clip_duration)
+                    
+                w, h = clip.size
+                target_ratio = 1080 / 1920.0
+                clip_ratio = w / float(h)
                 
-            if MOVIEPY_V2:
-                clip = clip.resized((1080, 1920))
-            else:
-                clip = clip.resize(newsize=(1080, 1920))
-            processed_clips.append(clip)
+                if clip_ratio > target_ratio:
+                    new_w = h * target_ratio
+                    if MOVIEPY_V2:
+                        clip = clip.cropped(x_center=w/2, width=new_w)
+                    else:
+                        clip = clip.crop(x_center=w/2, width=new_w)
+                else:
+                    new_h = w / target_ratio
+                    if MOVIEPY_V2:
+                        clip = clip.cropped(y_center=h/2, height=new_h)
+                    else:
+                        clip = clip.crop(y_center=h/2, height=new_h)
+                    
+                if MOVIEPY_V2:
+                    clip = clip.resized((1080, 1920))
+                else:
+                    clip = clip.resize(newsize=(1080, 1920))
+                processed_clips.append(clip)
+            except Exception as clip_err:
+                print(f"Warning: Skipping corrupted B-roll clip {path}: {clip_err}")
+                continue
             
         if not processed_clips:
             if audio: audio.close()
