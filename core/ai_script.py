@@ -34,48 +34,45 @@ def generate_video_content(topic: str) -> dict | None:
         return None
 
     prompt = f"""
-You are the lead storyteller for "{CHANNEL_NAME}".
-Your style is inspired by "Psycholo Secrets" - fast, high-energy, authoritative, and forbidden.
-Atmosphere: Dark, enigmatic, addictive.
+You are the elite lead strategist and storyteller for "{CHANNEL_NAME}". 
+Your style is professional, high-status, and enigmatic—inspired by the most viral "Dark Psychology" channels like Psycholo Secrets.
 
-TARGET TOPIC TO BE COVERED: "{topic}"
+TARGET TOPIC: "{topic}"
 
-=== CONTENT STRUCTURE: THE PSYCHOLO FORMULA ===
-1. THE VIRAL HOOK (0-2s): A shocking claim.
-   Example: "Three psychological tricks that make anyone obsessed with you."
-2. THE DESIRE / BRIDGE (2-7s): Ask a direct, emotional question.
-   Example: "Want to know how to make someone think about you constantly? How to become the person they can't stop obsessing over?"
-3. THE REALITY CHECK (7-14s): Call out common mistakes.
-   Example: "Most people try too hard. They text too much. They're always available. They chase."
-4. THE CLIMAX SHIFT (14-21s): The "Secret" pivot.
-   Example: "But if you're already following Ashley MindShift's secrets, you know obsession isn't created by being present. It's created by being unpredictable. And I'm about to show you exactly how. Watch this."
-5. THE 3-TRICK BREAKDOWN (21s - 75s):
-   - For each trick: Name it, explain EXACTLY what to do, then explain the "Why" (The Biological/Psychological Addiction).
-   - Trick 1: Give attention, then withdraw it. (Explain brain addiction to attention highs).
-   - Trick 2: Be mysterious. (Explain mystery creates curiosity/obsession).
-   - Trick 3: The Prize/Competition. (Explain humans want what others want).
+=== CORE DIRECTIVE: UNPARALLELED UNIQUENESS ===
+- NEVER reuse "Attention Withdrawal", "Mystery", or "Prize/Competition" as tricks unless the topic EXPLICITLY calls for them.
+- For EVERY topic, you must BRAINSTORM 3 completely original, specific psychological patterns or 'tricks' that actually relate to the '{topic}'.
+- If the topic is 'Why you feel watched', the tricks must be about spatial awareness, the limbic system, or peripheral vision—NOT about making people obsessed.
+- Be creative. Research (simulate) unique psychological theories for each script.
 
-6. THE FINAL LESSON & CTA (75s - 90s):
-   - Recap the secret: "Obsession isn't created by being perfect. It's created by being unpredictable."
-   - SCARCITY CTA: "Follow Ashley MindShift secrets now. And learn the dark psychology that makes people addicted to you. If you leave now, you might never find this frequency again."
+=== CONTENT STRUCTURE: THE ASHLEY MINDSHIFT FORMULA ===
+1. THE VIRAL HOOK (0-2s): A shocking or paradoxical claim specific to "{topic}".
+2. THE DESIRE / BRIDGE (2-7s): Ask an emotional, status-driven question that hooks the viewer's ego.
+3. THE HIDDEN REALITY (7-14s): Call out why traditional advice on this topic fails.
+4. THE FREQUENCY SHIFT (14-21s): The "Shadow" pivot. "But if you're on this frequency, you know the truth is much darker..."
+5. THE 3-TRICK BREAKDOWN (21s - 75s): 
+   - Invent 3 FRESH, topic-specific 'Dark Secrets' or 'Psychological Methods'.
+   - For each: Name it (e.g., "The Void Reflection", "The Gaze Anchor"), explain the technique, and the psychological 'Why'.
+   - These MUST be different for Every. Single. Script.
+6. THE FINAL REVELATION & SCARCITY CTA (75s - 90s):
+   - A philosophical closing thought. 
+   - "Follow Ashley MindShift now to stay ahead of the curve. Leave now, and you might lose this transmission forever."
 
 === SEO TITLE RULES ===
-- Intense, curious, and professional.
-- MUST INCLUDE 2 to 3 random hashtags from this pool: #DarkPsychology, #ShadowWork, #Manipulation, #MindMastery, #PsychologySecrets, #HumanBehavior, #ForbiddenKnowledge, #Viral, #Shorts.
-- EXAMPLE: "3 Tricks to Make Anyone Obsessed #DarkPsychology #MindMastery #Viral"
+- High-status, mysterious, and viral. 
+- Include 2-3 random hashtags: #DarkPsychology #ShadowWork #HumanBehavior #MindMastery #Viral #PsychologySecrets.
 
 === VISUAL B-ROLL KEYWORDS (ANIME/CARTOON ONLY) ===
-- Deliver EXACTLY 5 search keywords.
-- Must be: DARK ANIME ANIMATION, CINEMATIC CARTOON, CREEPY ILLUSTRATION, STYLIZED GRAPHICS.
-- NO REAL FOOTAGE. NO TEXT ON SCREEN. 
-- Example keywords: "Dark anime boy with glowing eyes cinematic no text", "Creepy stylized cartoon character lurking in shadows", "Noir anime city rain high contrast", "Stylized brain mapping psychological animation", "Dark anime girl looking mysterious and cold".
+- EXACTLY 5 search keywords. 
+- Style: DARK NOIR ANIME, CINEMATIC DARK CARTOON, CREEPY MINIMALIST ILLUSTRATION.
+- No real humans. No text.
 
 === OUTPUT ===
 Return ONLY valid JSON:
 {{
-    "title": "Intense Viral Title (e.g. 3 Tricks to Control Anyone followed by hashtags)",
-    "description": "Short, bullet-point breakdown of the tricks.",
-    "script": "The full spoken script (Spoken words only). Use pauses as ...",
+    "title": "Topic-Specific Viral Title with Hashtags",
+    "description": "Unique breakdown of the 3 specific tricks.",
+    "script": "Professional, intense spoken script. Use '...' for dramatic pauses.",
     "b_roll_keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"]
 }}
 """
@@ -104,28 +101,34 @@ def generate_long_video_content(topic: str) -> dict | None:
         return None
 
     prompt = f"""
-You are the master storyteller of "{CHANNEL_NAME}". 
-Your mission is to create a masterpiece deep-dive video about: "{topic}"
-Style: Dark, authoritative, cinematic, and profoundly insightful.
+You are the master strategist and storyteller of "{CHANNEL_NAME}". 
+Your mission is to produce a profound, high-status, cinematic deep-dive masterpiece about: "{topic}"
+
+=== CORE DIRECTIVE: UNIQUE MASTERY ===
+- This is NOT a Short. You must explore the deep philosophy and dark psychology of "{topic}".
+- DO NOT use generic tricks (Mystery, Attention). 
+- Imagine you are a mixture of a psychologist and a noir philosopher.
+- Every insight must be specifically discovered for this topic.
 
 === LONG-FORM STRUCTURE (8-10 Minutes) ===
-1. THE CINEMATIC OPENING (0-1 min): Hook the viewer with a paradox or a "forbidden" truth.
-2. THE ARCHITECTURE OF THE TOPIC (1-3 min): Explain the psychological foundation. Why does this matter?
-3. THE DEEP DIVE (3-6 min): Provide 5 to 7 specific, intense psychological patterns or hacks.
-   - For each hack, give it a name, a detailed explanation, and a "Dark Context" (how it's used/abused).
-4. THE REAL-WORLD CASE (6-8 min): Describe a hypothetical or historical master-class example of this topic.
-5. THE SHADOW WORK EXERCISE (8-9 min): Give the viewer a specific psychological exercise to try.
-6. THE FINAL REVELATION (9-10 min): A powerful summary and the "Why" behind the mastery.
+1. THE CINEMATIC OPENING (0-1 min): Hook the viewer with a paradox or a "forbidden" truth about "{topic}".
+2. THE ARCHITECTURE OF THE SHADOW (1-3 min): Explain the hidden psychological foundation. Why does this exist?
+3. THE 5 PILLARS OF MASTERY (3-6 min): Provide 5 specific, intense psychological patterns.
+   - For each: Name it, give a detailed technical explanation, and a "Dark Context" example.
+   - These MUST be profound and fresh. No surface-level advice.
+4. THE MASTER CLASS CASE STUDY (6-8 min): Describe a hypothetical or historical example of this logic in action.
+5. THE SHADOW WORK EXERCISE (8-9 min): Give the viewer a specific psychological exercise to practice.
+6. THE FINAL REVELATION (9-10 min): A powerful, philosophical summary that leaves the viewer feeling enlightened yet unsettled.
 
 === SEO & VISUALS ===
-- Title: Viral, clickbait-style but high-status.
-- B-Roll Keywords: Exactly 8-10 keywords. Must be: DARK ANIME ANIMATION or NOIR CARTOON only. No text. No real humans.
-- Script: Approximately 1500 words. Intense and descriptive. Use "..." for subtle pauses.
+- Title: Viral, high-status, and profoundly curious.
+- B-Roll Keywords: Exactly 10 keywords. Style: DARK NOIR ANIME or CINEMATIC SCIFI ANIMATION. No text. No real humans.
+- Script: Extensive, descriptive, and atmospheric (Approx 1500 words). Use "..." for pauses.
 
 === OUTPUT ===
 Return ONLY valid JSON:
 {{
-    "title": "Viral Long Title",
+    "title": "Topic-Specific Deep-Dive Title",
     "description": "Comprehensive video description with timestamps.",
     "script": "The full 1500 word script...",
     "b_roll_keywords": ["keyword1", ..., "keyword10"]
@@ -135,7 +138,7 @@ Return ONLY valid JSON:
         response = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}],
             model="llama-3.3-70b-versatile",
-            temperature=0.7,
+            temperature=0.75,
             max_tokens=6000,
             response_format={"type": "json_object"}
         )

@@ -39,12 +39,4 @@ def upload_to_tiktok(video_path: str, description: str, cookies_path: str):
         print(f"[TikTok ERROR] Failed to upload: {e}")
         return False
 
-if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--video", type=str, required=True)
-    parser.add_argument("--description", type=str, default="Ashley MindShift #Psychology #Shorts")
-    parser.add_argument("--cookies", type=str, default="tiktok_cookies.txt") # Default filename
-    args = parser.parse_args()
-
-    upload_to_tiktok(args.video, args.description, args.cookies)
+    return False

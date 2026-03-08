@@ -185,5 +185,3 @@ def get_used_topics_from_db():
     """
     from core.supabase_db import get_used_topics
     return get_used_topics()
-
-    return get_used_topics()

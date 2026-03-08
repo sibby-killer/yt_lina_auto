@@ -46,4 +46,9 @@ jobs:
           YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
           FLASK_SECRET_KEY: ${{ secrets.FLASK_SECRET_KEY }}
           YOUTUBE_PLAYLIST_ID: ${{ secrets.YOUTUBE_PLAYLIST_ID }}
-        run: python long_main.py
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          TIKTOK_COOKIES_PATH: "tiktok_cookies.txt"
+        run: |
+          echo "${{ secrets.TIKTOK_COOKIES_JSON }}" > tiktok_cookies.txt
+          python long_main.py

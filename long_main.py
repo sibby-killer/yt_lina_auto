@@ -56,10 +56,10 @@ def create_long_video(topic: str = None, progress_callback=None) -> bool:
 
     # ── 3. Download Pexels B-Roll ──────────────────────────────────────────
     log("\n[3/5] Downloading Pexels 16:9 B-Roll...")
-    # For ~10 minutes, we need roughly 50-60 clips if each is 10-12s.
-    # 10 keywords * 6 clips each = 60 clips.
+    # For ~10 minutes, we need roughly 40-50 clips if each is 12-15s.
+    # 10 keywords * 5 clips each = 50 clips.
     keywords = content.get('b_roll_keywords', [])
-    broll_paths, credits = download_pexels_b_roll(keywords, clips_per_keyword=6, progress_callback=progress_callback)
+    broll_paths, credits = download_pexels_b_roll(keywords, clips_per_keyword=5, progress_callback=progress_callback)
 
     if not broll_paths:
         log("Failed to download B-roll. Exiting.")

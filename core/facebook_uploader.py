@@ -88,20 +88,4 @@ def upload_to_facebook_video(video_path: str, description: str, page_id: str, ac
         print(f"[Facebook ERROR] Long-form upload failed: {e}")
         return None
 
-if __name__ == "__main__":
-    # Test block
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--video", type=str, required=True)
-    parser.add_argument("--caption", type=str, default="Ashley MindShift #DarkPsychology #Shorts")
-    args = parser.parse_args()
-    
-    # These would come from config/env in production
-    from config import os
-    from dotenv import load_dotenv
-    load_dotenv()
-    
-    p_id = os.getenv("FACEBOOK_PAGE_ID")
-    a_token = os.getenv("FACEBOOK_PAGE_ACCESS_TOKEN")
-    
-    upload_to_facebook_reels(args.video, args.caption, p_id, a_token)
+    return None
