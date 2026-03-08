@@ -37,10 +37,12 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
     if not topic:
         from core.topic_generator import get_next_topic, get_used_topics_from_db
         used = get_used_topics_from_db()
+        log(f"[Topic] Found {len(used)} used topics in DB.")
         topic = get_next_topic(used_topics=used)
+        log(f"[Topic] Selected NEW topic: {topic}")
 
     log(f"\n===========================================")
-    log(f"  {CHANNEL_NAME.upper()}: {topic[:60]}")
+    log(f"  {CHANNEL_NAME.upper()}: {topic[:70]}")
     log(f"===========================================\n")
 
     # ── 1. Generate Script & Metadata ──────────────────────────────────────
