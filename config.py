@@ -25,6 +25,8 @@ FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "indigo-insights-secret-2026")
 # Folders
 OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 TEMP_DIR   = os.path.join(BASE_DIR, "temp")
+VID_BG_DIR = os.path.join(BASE_DIR, "vid_bg")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(TEMP_DIR, exist_ok=True)
+os.makedirs(VID_BG_DIR, exist_ok=True)

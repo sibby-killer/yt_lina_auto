@@ -5,10 +5,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from core.ai_script import generate_video_content, CHANNEL_NAME
-from core.tts import generate_voiceover
 from core.yt_scraper import download_viral_b_roll
 from core.video_editor import stitch_video
+from config import VID_BG_DIR
+import random
 
 
 def create_short(topic: str = None, progress_callback=None) -> bool:
@@ -21,9 +21,8 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
             progress_callback(msg)
 
     # ── 0. DB Cleanup (Maintain Free Plan space) ──────────────────────────
-    from core.supabase_db import log_video, update_video_upload, cleanup_old_logs
     try:
-        cleanup_old_logs(days=3)
+        cleanup_old_logs(days=7)
     except Exception as e:
         print(f"[Cleanup] Failed: {e}")
 
@@ -62,19 +61,12 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
         log("Failed to download B-roll. Exiting.")
         return False
 
-    # ── 4. Assemble Video ──────────────────────────────────────────────────
-    log("\n[4/5] Assembling Final MP4...")
-    safe_title = re.sub(r'[\\/*?:"<>|#]', "", content.get("title", "video")).strip().replace(" ", "_")
-    output_filename = f"{safe_title[:40]}_final.mp4"
-
     # Select random background music
-    import random
-    bg_music_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vid_bg")
     bg_music_path = None
-    if os.path.exists(bg_music_dir):
-        music_files = [f for f in os.listdir(bg_music_dir) if f.endswith(".mp3")]
+    if os.path.exists(VID_BG_DIR):
+        music_files = [f for f in os.listdir(VID_BG_DIR) if f.endswith(".mp3")]
         if music_files:
-            bg_music_path = os.path.join(bg_music_dir, random.choice(music_files))
+            bg_music_path = os.path.join(VID_BG_DIR, random.choice(music_files))
             log(f"Selected Professional BG Music: {os.path.basename(bg_music_path)}")
 
     final_video_path = stitch_video(

@@ -10,6 +10,8 @@ from core.tts import generate_voiceover
 from core.pexels_scraper import download_pexels_b_roll
 from core.video_editor import stitch_video
 from core.supabase_db import log_video, update_video_upload, cleanup_old_logs
+from config import VID_BG_DIR
+import random
 
 
 def create_long_video(topic: str = None, progress_callback=None) -> bool:
@@ -71,13 +73,11 @@ def create_long_video(topic: str = None, progress_callback=None) -> bool:
     output_filename = f"{safe_title[:40]}_long_final.mp4"
 
     # Select random background music
-    import random
-    bg_music_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vid_bg")
     bg_music_path = None
-    if os.path.exists(bg_music_dir):
-        music_files = [f for f in os.listdir(bg_music_dir) if f.endswith(".mp3")]
+    if os.path.exists(VID_BG_DIR):
+        music_files = [f for f in os.listdir(VID_BG_DIR) if f.endswith(".mp3")]
         if music_files:
-            bg_music_path = os.path.join(bg_music_dir, random.choice(music_files))
+            bg_music_path = os.path.join(VID_BG_DIR, random.choice(music_files))
             log(f"Selected Professional BG Music: {os.path.basename(bg_music_path)}")
 
     final_video_path = stitch_video(
