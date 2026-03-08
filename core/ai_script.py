@@ -52,9 +52,15 @@ Atmosphere: Dark, enigmatic, addictive.
    - Trick 1: Give attention, then withdraw it. (Explain brain addiction to attention highs).
    - Trick 2: Be mysterious. (Explain mystery creates curiosity/obsession).
    - Trick 3: The Prize/Competition. (Explain humans want what others want).
+
 6. THE FINAL LESSON & CTA (75s - 90s):
    - Recap the secret: "Obsession isn't created by being perfect. It's created by being unpredictable."
    - SCARCITY CTA: "Follow Ashley MindShift secrets now. And learn the dark psychology that makes people addicted to you. If you leave now, you might never find this frequency again."
+
+=== SEO TITLE RULES ===
+- Intense, curious, and professional.
+- MUST INCLUDE 2 to 3 random hashtags from this pool: #DarkPsychology, #ShadowWork, #Manipulation, #MindMastery, #PsychologySecrets, #HumanBehavior, #ForbiddenKnowledge, #Viral, #Shorts.
+- EXAMPLE: "3 Tricks to Make Anyone Obsessed #DarkPsychology #MindMastery #Viral"
 
 === VISUAL B-ROLL KEYWORDS (ANIME/CARTOON ONLY) ===
 - Deliver EXACTLY 5 search keywords.
@@ -65,7 +71,7 @@ Atmosphere: Dark, enigmatic, addictive.
 === OUTPUT ===
 Return ONLY valid JSON:
 {{
-    "title": "Intense Viral Title (e.g. 3 Tricks to Control Anyone)",
+    "title": "Intense Viral Title (e.g. 3 Tricks to Control Anyone followed by hashtags)",
     "description": "Short, bullet-point breakdown of the tricks.",
     "script": "The full spoken script (Spoken words only). Use pauses as ...",
     "b_roll_keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"]
