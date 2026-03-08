@@ -34,45 +34,38 @@ def generate_video_content(topic: str) -> dict | None:
         return None
 
     prompt = f"""
-You are the elite lead strategist and storyteller for "{CHANNEL_NAME}". 
-Your style is professional, high-status, and enigmatic—inspired by the most viral "Dark Psychology" channels like Psycholo Secrets.
+You are the master elite strategist for "{CHANNEL_NAME}". 
+Vision: High-status, enigmatic, dark psychology deep-dives.
 
 TARGET TOPIC: "{topic}"
 
-=== CORE DIRECTIVE: UNPARALLELED UNIQUENESS ===
-- NEVER reuse "Attention Withdrawal", "Mystery", or "Prize/Competition" as tricks unless the topic EXPLICITLY calls for them.
-- For EVERY topic, you must BRAINSTORM 3 completely original, specific psychological patterns or 'tricks' that actually relate to the '{topic}'.
-- If the topic is 'Why you feel watched', the tricks must be about spatial awareness, the limbic system, or peripheral vision—NOT about making people obsessed.
-- Be creative. Research (simulate) unique psychological theories for each script.
+=== VISUAL BRAND IDENTITY: CRITICAL ===
+- ONLY 2D/3D ANIMATION. NO REAL LIFE CLIPS. NO REAL HUMANS. 
+- Style: DARK NOIR ANIME, CINEMATIC DARK CARTOON, EERIE MINIMALIST ILLUSTRATION.
+- NO CAPTIONS OR TEXT on source clips.
 
-=== CONTENT STRUCTURE: THE ASHLEY MINDSHIFT FORMULA ===
-1. THE VIRAL HOOK (0-2s): A shocking or paradoxical claim specific to "{topic}".
-2. THE DESIRE / BRIDGE (2-7s): Ask an emotional, status-driven question that hooks the viewer's ego.
-3. THE HIDDEN REALITY (7-14s): Call out why traditional advice on this topic fails.
-4. THE FREQUENCY SHIFT (14-21s): The "Shadow" pivot. "But if you're on this frequency, you know the truth is much darker..."
+=== CONTENT STRUCTURE ===
+1. THE VIRAL HOOK (0-2s): Paradoxical claim about "{topic}".
+2. THE DESIRE (2-7s): Emotional bridge.
+3. THE HIDDEN REALITY (7-14s): Why traditional advice fails.
+4. THE FREQUENCY SHIFT (14-21s): The "Shadow" pivot.
 5. THE 3-TRICK BREAKDOWN (21s - 75s): 
-   - Invent 3 FRESH, topic-specific 'Dark Secrets' or 'Psychological Methods'.
-   - For each: Name it (e.g., "The Void Reflection", "The Gaze Anchor"), explain the technique, and the psychological 'Why'.
-   - These MUST be different for Every. Single. Script.
+   - 3 FRESH, topic-specific 'Dark Secrets'. 
+   - Name them (e.g., "The Void Reflection"), explain technique & 'Why'.
 6. THE FINAL REVELATION & SCARCITY CTA (75s - 90s):
-   - A philosophical closing thought. 
-   - "Follow Ashley MindShift now to stay ahead of the curve. Leave now, and you might lose this transmission forever."
+   - "Follow Ashley MindShift now. Leave now, and you might lose this transmission."
 
-=== SEO TITLE RULES ===
-- High-status, mysterious, and viral. 
-- Include 2-3 random hashtags: #DarkPsychology #ShadowWork #HumanBehavior #MindMastery #Viral #PsychologySecrets.
-
-=== VISUAL B-ROLL KEYWORDS (ANIME/CARTOON ONLY) ===
-- EXACTLY 5 search keywords. 
-- Style: DARK NOIR ANIME, CINEMATIC DARK CARTOON, CREEPY MINIMALIST ILLUSTRATION.
-- No real humans. No text.
+=== VISUAL B-ROLL KEYWORDS (ANIME ONLY) ===
+- Deliver EXACTLY 5 search keywords specifically for TIKTOK search.
+- Keywords MUST include adjectives like: anime, animated, cartoon, drawing, sketch.
+- Example: "dark anime girl eyes", "animated brain mapping", "shadow figure drawing".
 
 === OUTPUT ===
 Return ONLY valid JSON:
 {{
     "title": "Topic-Specific Viral Title with Hashtags",
     "description": "Unique breakdown of the 3 specific tricks.",
-    "script": "Professional, intense spoken script. Use '...' for dramatic pauses.",
+    "script": "Professional script (90s). Use '...' for pauses.",
     "b_roll_keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"]
 }}
 """
@@ -101,29 +94,28 @@ def generate_long_video_content(topic: str) -> dict | None:
         return None
 
     prompt = f"""
-You are the master strategist and storyteller of "{CHANNEL_NAME}". 
-Your mission is to produce a profound, high-status, cinematic deep-dive masterpiece about: "{topic}"
+You are the master lead strategist for "{CHANNEL_NAME}". 
+Objective: Create a profound, high-status, cinematic deep-dive masterpiece (8-10 Min).
 
-=== CORE DIRECTIVE: UNIQUE MASTERY ===
-- This is NOT a Short. You must explore the deep philosophy and dark psychology of "{topic}".
-- DO NOT use generic tricks (Mystery, Attention). 
-- Imagine you are a mixture of a psychologist and a noir philosopher.
-- Every insight must be specifically discovered for this topic.
+TARGET TOPIC: "{topic}"
 
-=== LONG-FORM STRUCTURE (8-10 Minutes) ===
-1. THE CINEMATIC OPENING (0-1 min): Hook the viewer with a paradox or a "forbidden" truth about "{topic}".
-2. THE ARCHITECTURE OF THE SHADOW (1-3 min): Explain the hidden psychological foundation. Why does this exist?
-3. THE 5 PILLARS OF MASTERY (3-6 min): Provide 5 specific, intense psychological patterns.
-   - For each: Name it, give a detailed technical explanation, and a "Dark Context" example.
-   - These MUST be profound and fresh. No surface-level advice.
-4. THE MASTER CLASS CASE STUDY (6-8 min): Describe a hypothetical or historical example of this logic in action.
-5. THE SHADOW WORK EXERCISE (8-9 min): Give the viewer a specific psychological exercise to practice.
-6. THE FINAL REVELATION (9-10 min): A powerful, philosophical summary that leaves the viewer feeling enlightened yet unsettled.
+=== VISUAL BRAND IDENTITY: CRITICAL ===
+- ONLY 2D/3D ANIMATION, CINEMATIC CGI, OR STYLIZED ART.
+- NO REAL WORLD CLIPS. NO REAL HUMANS.
+- Style: DARK NOIR ANIME or CINEMATIC SCIFI ANIMATION.
 
-=== SEO & VISUALS ===
-- Title: Viral, high-status, and profoundly curious.
-- B-Roll Keywords: Exactly 10 keywords. Style: DARK NOIR ANIME or CINEMATIC SCIFI ANIMATION. No text. No real humans.
-- Script: Extensive, descriptive, and atmospheric (Approx 1500 words). Use "..." for pauses.
+=== LONG-FORM STRUCTURE ===
+1. THE CINEMATIC OPENING (0-1 min): Paradoxical truth.
+2. THE ARCHITECTURE OF THE SHADOW (1-3 min): Hidden foundation.
+3. THE 5 PILLARS OF MASTERY (3-6 min): 5 profound patterns.
+4. THE MASTER CLASS CASE STUDY (6-8 min): Historical/hypothetical example.
+5. THE SHADOW WORK EXERCISE (8-9 min): Psychological exercise.
+6. THE FINAL REVELATION (9-10 min): Philosophical summary.
+
+=== VISUAL B-ROLL KEYWORDS (ANIME ONLY) ===
+- Deliver EXACTLY 10 search keywords specifically for PEXELS search.
+- Keywords MUST include adjectives like: anime, animated, cartoon, cgi, 3d render.
+- Example: "noir anime city dark rain", "3d render of human soul glowing", "dark animated library".
 
 === OUTPUT ===
 Return ONLY valid JSON:

@@ -58,7 +58,7 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
     # ── 3. Download B-Roll ─────────────────────────────────────────────────
     log("\n[3/5] Downloading Viral TikTok B-Roll...")
     keywords = content.get('b_roll_keywords', [])
-    broll_paths, credits = download_viral_b_roll(keywords, clips_per_keyword=3, progress_callback=progress_callback)
+    broll_paths, credits = download_viral_b_roll(keywords, clips_per_keyword=2, progress_callback=progress_callback)
 
     if not broll_paths:
         log("Failed to download B-roll. Exiting.")

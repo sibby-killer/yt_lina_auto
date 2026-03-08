@@ -16,9 +16,11 @@ def download_viral_b_roll(keywords: list, clips_per_keyword: int = 2, progress_c
         if progress_callback: progress_callback(msg)
             
     for i, keyword in enumerate(keywords):
-        # Adding "cinematic no text" to get better results
-        clean_keyword = f"{keyword} cinematic no text"
-        log(f"Searching TikTok for: {clean_keyword}...")
+        # FORCING ANIMATED/ANIME STYLE: Never real life humans.
+        # We append keywords that steer TikTok search towards clean, textless animation.
+        force_styles = "dark anime cinematic no text no caption no human"
+        search_query = f"{keyword} {force_styles}"
+        log(f"Searching TikTok for Animation: {search_query}...")
         
         url = "https://tikwm.com/api/feed/search"
         data = {

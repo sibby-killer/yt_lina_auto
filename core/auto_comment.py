@@ -3,7 +3,7 @@ Auto-Comment Bot — Indigo Insights
 """
 CTA_COMMENT_TEXT = (
     "Which psychological trick do you think is the MOST dangerous? 🧠 "
-    "Master the art of the mind: Follow @indigoinsights "
+    "Master the art of the mind: Follow @AshleyMindShift "
     "Check the link in our bio for the masterclass! 🚀"
 )
 
