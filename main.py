@@ -67,10 +67,21 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
     safe_title = re.sub(r'[\\/*?:"<>|#]', "", content.get("title", "video")).strip().replace(" ", "_")
     output_filename = f"{safe_title[:40]}_final.mp4"
 
+    # Select random background music
+    import random
+    bg_music_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vid_bg")
+    bg_music_path = None
+    if os.path.exists(bg_music_dir):
+        music_files = [f for f in os.listdir(bg_music_dir) if f.endswith(".mp3")]
+        if music_files:
+            bg_music_path = os.path.join(bg_music_dir, random.choice(music_files))
+            log(f"Selected Professional BG Music: {os.path.basename(bg_music_path)}")
+
     final_video_path = stitch_video(
         audio_path, broll_paths,
         output_filename=output_filename,
-        srt_path=srt_path
+        srt_path=srt_path,
+        bg_music_path=bg_music_path
     )
 
     if not final_video_path:

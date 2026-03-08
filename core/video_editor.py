@@ -8,18 +8,19 @@ if not hasattr(PIL.Image, 'ANTIALIAS'):
 # --------------------------------------------------------------
 
 try:
-    from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, vfx
+    from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, vfx, CompositeAudioClip
     MOVIEPY_V2 = False
 except ImportError:
-    from moviepy import VideoFileClip, AudioFileClip, concatenate_videoclips, vfx
+    from moviepy import VideoFileClip, AudioFileClip, concatenate_videoclips, vfx, CompositeAudioClip
     MOVIEPY_V2 = True
 
 from config import OUTPUT_DIR, TEMP_DIR
 
-def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "final_short.mp4", srt_path: str = None, orientation: str = "portrait"):
+def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "final_short.mp4", srt_path: str = None, orientation: str = "portrait", bg_music_path: str = None):
     """
     Stitches B-roll for Ashley MindShift with specific styling.
     orientation: "portrait" (1080x1920) or "landscape" (1920x1080)
+    bg_music_path: Optional path to background music file.
     """
     print(f"Starting video assembly ({orientation})...")
     
@@ -39,9 +40,39 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
         return None
 
     try:
+        # Load Voiceover
         audio = AudioFileClip(audio_path)
         total_duration = audio.duration
         
+        # Determine background music mix
+        if bg_music_path and os.path.exists(bg_music_path):
+            print(f"Mixing background music: {bg_music_path}")
+            bg_music = AudioFileClip(bg_music_path)
+            
+            # Loop bg music if shorter than voiceover
+            if bg_music.duration < total_duration:
+                if MOVIEPY_V2:
+                    bg_music = bg_music.with_effects([vfx.Loop(duration=total_duration)])
+                else:
+                    bg_music = bg_music.fx(vfx.loop, duration=total_duration)
+            else:
+                if MOVIEPY_V2:
+                    bg_music = bg_music.subclipped(0, total_duration)
+                else:
+                    bg_music = bg_music.subclip(0, total_duration)
+            
+            # Adjust volume (bg music low, voiceover clear)
+            if MOVIEPY_V2:
+                bg_music = bg_music.with_volume_scaled(0.15) # 15% volume
+                audio = audio.with_volume_scaled(1.0)
+            else:
+                bg_music = bg_music.volumex(0.15)
+                audio = audio.volumex(1.0)
+                
+            final_audio = CompositeAudioClip([audio, bg_music])
+        else:
+            final_audio = audio
+            
         num_clips = len(broll_paths)
         clip_duration = total_duration / num_clips
         
@@ -92,16 +123,17 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
             
         if not processed_clips:
             if audio: audio.close()
+            if 'bg_music' in locals(): bg_music.close()
             return None
             
         print("Concatenating video clips...")
         final_video = concatenate_videoclips(processed_clips, method="compose")
         
-        print("Adding voiceover...")
+        print("Adding audio mix...")
         if MOVIEPY_V2:
-            final_video = final_video.with_audio(audio)
+            final_video = final_video.with_audio(final_audio)
         else:
-            final_video = final_video.set_audio(audio)
+            final_video = final_video.set_audio(final_audio)
         
         output_path = os.path.join(OUTPUT_DIR, output_filename)
         
