@@ -5,8 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from core.ai_script import generate_video_content, CHANNEL_NAME
+from core.tts import generate_voiceover
 from core.yt_scraper import download_viral_b_roll
 from core.video_editor import stitch_video
+from core.supabase_db import log_video, update_video_upload, cleanup_old_logs
 from config import VID_BG_DIR
 import random
 
@@ -60,6 +63,11 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
     if not broll_paths:
         log("Failed to download B-roll. Exiting.")
         return False
+
+    # ── 4. Assemble Video ──────────────────────────────────────────────────
+    log("\n[4/5] Assembling Final MP4...")
+    safe_title = re.sub(r'[\\/*?:"<>|#]', "", content.get("title", "video")).strip().replace(" ", "_")
+    output_filename = f"{safe_title[:40]}_final.mp4"
 
     # Select random background music
     bg_music_path = None
