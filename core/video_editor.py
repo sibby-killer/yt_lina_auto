@@ -1,11 +1,18 @@
 import os
 import subprocess
-from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, vfx
+try:
+    from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, vfx
+    MOVIEPY_V2 = False
+except ImportError:
+    from moviepy import VideoFileClip, AudioFileClip, concatenate_videoclips, vfx
+    MOVIEPY_V2 = True
+
 from config import OUTPUT_DIR, TEMP_DIR
 
 def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "final_short.mp4", srt_path: str = None):
     """
-    Stitches B-roll for Indigo Insights with specific styling.
+    Stitches B-roll for Ashley MindShift with specific styling.
+    Compatible with MoviePy v1.x and v2.x.
     """
     print("Starting video assembly...")
     
@@ -31,10 +38,17 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
                 
             clip = VideoFileClip(path)
             
+            # Duration handling
             if clip.duration < clip_duration:
-                clip = clip.fx(vfx.loop, duration=clip_duration)
+                if MOVIEPY_V2:
+                    clip = clip.with_effects([vfx.Loop(duration=clip_duration)])
+                else:
+                    clip = clip.fx(vfx.loop, duration=clip_duration)
             else:
-                clip = clip.subclip(0, clip_duration)
+                if MOVIEPY_V2:
+                    clip = clip.cropped_video(end_time=clip_duration) # subclip alternative in v2
+                else:
+                    clip = clip.subclip(0, clip_duration)
                 
             w, h = clip.size
             target_ratio = 1080 / 1920.0
@@ -51,18 +65,23 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
             processed_clips.append(clip)
             
         if not processed_clips:
+            if audio: audio.close()
             return None
             
         print("Concatenating video clips...")
         final_video = concatenate_videoclips(processed_clips, method="compose")
         
         print("Adding voiceover...")
-        final_video = final_video.set_audio(audio)
+        if MOVIEPY_V2:
+            final_video = final_video.with_audio(audio)
+        else:
+            final_video = final_video.set_audio(audio)
         
         output_path = os.path.join(OUTPUT_DIR, output_filename)
         
         if srt_path and os.path.exists(srt_path):
             temp_output = os.path.join(TEMP_DIR, "temp_no_subs.mp4")
+            # write_videofile has some changed params in v2 but logger=None and threads=1 are safe
             final_video.write_videofile(
                 temp_output,
                 fps=30,
@@ -82,8 +101,6 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
             else:
                 ffmpeg_srt_path = srt_abs.replace('\\', '/')
 
-            # Indigo Insights Style: White Text, Cyan Outline (Glow effect), Mid-Center, Bold
-            # Primary: White (&HFFFFFF), Outline: Cyan (&HFFFF00)
             style = "FontName=Arial,FontSize=28,PrimaryColour=&HFFFFFF&,OutlineColour=&HFFFF00&,Outline=3,Alignment=10,Bold=1"
             
             import imageio_ffmpeg
@@ -113,4 +130,12 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
 
     except Exception as e:
         print(f"Error during video editing: {e}")
+        # Ensure cleanup on fail
+        try:
+            if 'audio' in locals(): audio.close()
+            if 'processed_clips' in locals(): 
+                for c in processed_clips: c.close()
+            if 'final_video' in locals(): final_video.close()
+        except: pass
         return None
+
