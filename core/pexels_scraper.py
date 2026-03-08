@@ -3,9 +3,9 @@ import requests
 import random
 from config import PEXELS_API_KEY, TEMP_DIR
 
-def download_pexels_b_roll(keywords: list, clips_per_keyword: int = 3, progress_callback=None):
+def download_pexels_b_roll(keywords: list, clips_per_keyword: int = 3, progress_callback=None, orientation: str = "landscape"):
     """
-    Downloads landscape (16:9) B-roll from Pexels for long-form videos.
+    Downloads B-roll from Pexels in specified orientation (landscape or portrait).
     """
     if not PEXELS_API_KEY:
         print("[Pexels] Error: PEXELS_API_KEY not set.")
@@ -21,10 +21,10 @@ def download_pexels_b_roll(keywords: list, clips_per_keyword: int = 3, progress_
         if progress_callback: progress_callback(msg)
 
     for i, keyword in enumerate(keywords):
-        log(f"Searching Pexels for: {keyword}...")
+        log(f"Searching Pexels ({orientation}) for: {keyword}...")
         
         # Search for videos
-        url = f"https://api.pexels.com/videos/search?query={keyword}&per_page=15&orientation=landscape&size=medium"
+        url = f"https://api.pexels.com/videos/search?query={keyword}&per_page=15&orientation={orientation}&size=medium"
         
         try:
             res = requests.get(url, headers=headers, timeout=15)
@@ -49,9 +49,16 @@ def download_pexels_b_roll(keywords: list, clips_per_keyword: int = 3, progress_
                 # video_files are usually ordered by quality or have 'width'
                 play_url = None
                 for vf in video_files:
-                    if vf.get('width') == 1920 or vf.get('quality') == 'hd':
-                        play_url = vf.get('link')
-                        break
+                    # In portrait, we look for height=1920 or width=1080
+                    # Standard Pexels HD is usually 720p or 1080p
+                    if orientation == "portrait":
+                        if vf.get('height') >= 1280 or vf.get('width') >= 720:
+                            play_url = vf.get('link')
+                            break
+                    else:
+                        if vf.get('width') >= 1280 or vf.get('quality') == 'hd':
+                            play_url = vf.get('link')
+                            break
                 
                 if not play_url:
                     play_url = video_files[0].get('link')

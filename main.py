@@ -7,7 +7,7 @@ load_dotenv()
 
 from core.ai_script import generate_video_content, CHANNEL_NAME
 from core.tts import generate_voiceover
-from core.yt_scraper import download_viral_b_roll
+from core.pexels_scraper import download_pexels_b_roll
 from core.video_editor import stitch_video
 
 
@@ -54,9 +54,9 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
     audio_path, srt_path = generate_voiceover(content.get('script'), filename="voiceover.mp3")
 
     # ── 3. Download B-Roll ─────────────────────────────────────────────────
-    log("\n[3/5] Downloading Viral B-Roll...")
+    log("\n[3/5] Downloading Professional Pexels B-Roll...")
     keywords = content.get('b_roll_keywords', [])
-    broll_paths, credits = download_viral_b_roll(keywords, clips_per_keyword=2, progress_callback=progress_callback)
+    broll_paths, credits = download_pexels_b_roll(keywords, clips_per_keyword=3, progress_callback=progress_callback, orientation="portrait")
 
     if not broll_paths:
         log("Failed to download B-roll. Exiting.")
@@ -150,7 +150,6 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
 
     # ── 7. Facebook Reels Upload ──────────────────────────────────────────
     from core.facebook_uploader import upload_to_facebook_reels
-    from config import os
     fb_page_id = os.getenv("FACEBOOK_PAGE_ID")
     fb_token   = os.getenv("FACEBOOK_PAGE_ACCESS_TOKEN")
     if fb_page_id and fb_token:

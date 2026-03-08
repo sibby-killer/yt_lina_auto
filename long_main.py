@@ -132,7 +132,6 @@ def create_long_video(topic: str = None, progress_callback=None) -> bool:
 
     # ── 6. Facebook Video Upload ──────────────────────────────────────────
     from core.facebook_uploader import upload_to_facebook_video
-    from config import os
     fb_page_id = os.getenv("FACEBOOK_PAGE_ID")
     fb_token   = os.getenv("FACEBOOK_PAGE_ACCESS_TOKEN")
     if fb_page_id and fb_token:
