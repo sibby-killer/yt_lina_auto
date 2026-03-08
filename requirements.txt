@@ -12,4 +12,3 @@ requests
 APScheduler
 pytz
 praw
-tiktok-api-python
