@@ -12,7 +12,7 @@ from config import OUTPUT_DIR, TEMP_DIR
 def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "final_short.mp4", srt_path: str = None):
     """
     Stitches B-roll for Ashley MindShift with specific styling.
-    Compatible with MoviePy v1.x and v2.x.
+    Compatible with MoviePy v1.x and v2.x (Fixed API methods).
     """
     print("Starting video assembly...")
     
@@ -46,7 +46,7 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
                     clip = clip.fx(vfx.loop, duration=clip_duration)
             else:
                 if MOVIEPY_V2:
-                    clip = clip.cropped_video(end_time=clip_duration) # subclip alternative in v2
+                    clip = clip.subclipped(0, clip_duration) # Correct v2 subclip
                 else:
                     clip = clip.subclip(0, clip_duration)
                 
@@ -56,12 +56,21 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
             
             if clip_ratio > target_ratio:
                 new_w = h * target_ratio
-                clip = clip.crop(x_center=w/2, width=new_w)
+                if MOVIEPY_V2:
+                    clip = clip.cropped(x_center=w/2, width=new_w)
+                else:
+                    clip = clip.crop(x_center=w/2, width=new_w)
             else:
                 new_h = w / target_ratio
-                clip = clip.crop(y_center=h/2, height=new_h)
+                if MOVIEPY_V2:
+                    clip = clip.cropped(y_center=h/2, height=new_h)
+                else:
+                    clip = clip.crop(y_center=h/2, height=new_h)
                 
-            clip = clip.resize(newsize=(1080, 1920))
+            if MOVIEPY_V2:
+                clip = clip.resized((1080, 1920))
+            else:
+                clip = clip.resize(newsize=(1080, 1920))
             processed_clips.append(clip)
             
         if not processed_clips:
