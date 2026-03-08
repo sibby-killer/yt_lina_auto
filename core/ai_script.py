@@ -95,6 +95,55 @@ Return ONLY valid JSON:
         print(f"[Groq] Error generating script: {e}")
         return None
 
+def generate_long_video_content(topic: str) -> dict | None:
+    """
+    Generates 8-10 minute long-form content (approx 1200-1500 words).
+    Formula: Introduction -> The Core Mystery -> 5-7 Deep Insights -> Case Study -> Practical Exercise -> Conclusion.
+    """
+    if not client:
+        return None
+
+    prompt = f"""
+You are the master storyteller of "{CHANNEL_NAME}". 
+Your mission is to create a masterpiece deep-dive video about: "{topic}"
+Style: Dark, authoritative, cinematic, and profoundly insightful.
+
+=== LONG-FORM STRUCTURE (8-10 Minutes) ===
+1. THE CINEMATIC OPENING (0-1 min): Hook the viewer with a paradox or a "forbidden" truth.
+2. THE ARCHITECTURE OF THE TOPIC (1-3 min): Explain the psychological foundation. Why does this matter?
+3. THE DEEP DIVE (3-6 min): Provide 5 to 7 specific, intense psychological patterns or hacks.
+   - For each hack, give it a name, a detailed explanation, and a "Dark Context" (how it's used/abused).
+4. THE REAL-WORLD CASE (6-8 min): Describe a hypothetical or historical master-class example of this topic.
+5. THE SHADOW WORK EXERCISE (8-9 min): Give the viewer a specific psychological exercise to try.
+6. THE FINAL REVELATION (9-10 min): A powerful summary and the "Why" behind the mastery.
+
+=== SEO & VISUALS ===
+- Title: Viral, clickbait-style but high-status.
+- B-Roll Keywords: Exactly 8-10 keywords. Must be: DARK ANIME ANIMATION or NOIR CARTOON only. No text. No real humans.
+- Script: Approximately 1500 words. Intense and descriptive. Use "..." for subtle pauses.
+
+=== OUTPUT ===
+Return ONLY valid JSON:
+{{
+    "title": "Viral Long Title",
+    "description": "Comprehensive video description with timestamps.",
+    "script": "The full 1500 word script...",
+    "b_roll_keywords": ["keyword1", ..., "keyword10"]
+}}
+"""
+    try:
+        response = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="llama-3.3-70b-versatile",
+            temperature=0.7,
+            max_tokens=6000,
+            response_format={"type": "json_object"}
+        )
+        return json.loads(response.choices[0].message.content)
+    except Exception as e:
+        print(f"[Groq] Long-form error: {e}")
+        return None
+
 if __name__ == "__main__":
     test = generate_video_content("How to make someone obsessed with you")
     if test:

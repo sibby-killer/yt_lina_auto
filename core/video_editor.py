@@ -1,5 +1,12 @@
 import os
 import subprocess
+
+# --- MONKEY PATCH FOR MOVIEPY PIL DEPENDENCY (Pillow >= 10) ---
+import PIL.Image
+if not hasattr(PIL.Image, 'ANTIALIAS'):
+    PIL.Image.ANTIALIAS = PIL.Image.Resampling.LANCZOS
+# --------------------------------------------------------------
+
 try:
     from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips, vfx
     MOVIEPY_V2 = False
@@ -9,13 +16,20 @@ except ImportError:
 
 from config import OUTPUT_DIR, TEMP_DIR
 
-def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "final_short.mp4", srt_path: str = None):
+def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "final_short.mp4", srt_path: str = None, orientation: str = "portrait"):
     """
     Stitches B-roll for Ashley MindShift with specific styling.
-    Compatible with MoviePy v1.x and v2.x (Fixed API methods).
+    orientation: "portrait" (1080x1920) or "landscape" (1920x1080)
     """
-    print("Starting video assembly...")
+    print(f"Starting video assembly ({orientation})...")
     
+    if orientation == "landscape":
+        target_size = (1920, 1080)
+        target_ratio = 1920 / 1080.0
+    else:
+        target_size = (1080, 1920)
+        target_ratio = 1080 / 1920.0
+
     if not os.path.exists(audio_path):
         print(f"Error: Audio file {audio_path} not found.")
         return None
@@ -52,7 +66,6 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
                         clip = clip.subclip(0, clip_duration)
                     
                 w, h = clip.size
-                target_ratio = 1080 / 1920.0
                 clip_ratio = w / float(h)
                 
                 if clip_ratio > target_ratio:
@@ -69,9 +82,9 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
                         clip = clip.crop(y_center=h/2, height=new_h)
                     
                 if MOVIEPY_V2:
-                    clip = clip.resized((1080, 1920))
+                    clip = clip.resized(target_size)
                 else:
-                    clip = clip.resize(newsize=(1080, 1920))
+                    clip = clip.resize(newsize=target_size)
                 processed_clips.append(clip)
             except Exception as clip_err:
                 print(f"Warning: Skipping corrupted B-roll clip {path}: {clip_err}")

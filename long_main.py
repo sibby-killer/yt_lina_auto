@@ -1,0 +1,131 @@
+import os
+import re
+import argparse
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from core.ai_script import generate_long_video_content, CHANNEL_NAME
+from core.tts import generate_voiceover
+from core.pexels_scraper import download_pexels_b_roll
+from core.video_editor import stitch_video
+from core.supabase_db import log_video, update_video_upload, cleanup_old_logs
+
+
+def create_long_video(topic: str = None, progress_callback=None) -> bool:
+    """
+    Master function for Ashley MindShift Long-Form Videos (8min+).
+    """
+    def log(msg):
+        print(msg)
+        if progress_callback:
+            progress_callback(msg)
+
+    # ── 0. DB Cleanup ──────────────────────────
+    try:
+        cleanup_old_logs(days=7) # Keeping longform logs a bit longer
+    except Exception as e:
+        print(f"[Cleanup] Failed: {e}")
+
+    # Auto-pick topic if not supplied
+    if not topic:
+        from core.topic_generator import get_next_topic, get_used_topics_from_db
+        used = get_used_topics_from_db()
+        log(f"[Topic] Found {len(used)} used topics in DB.")
+        topic = get_next_topic(used_topics=used)
+        log(f"[Topic] Selected NEW topic: {topic}")
+
+    log(f"\n===========================================")
+    log(f"  {CHANNEL_NAME.upper()} LONG-FORM: {topic[:70]}")
+    log(f"===========================================\n")
+
+    # ── 1. Generate Long Script & Metadata ───────────────────────────────────
+    log("[1/5] Brainstorming Long-Form with Groq...")
+    content = generate_long_video_content(topic)
+    if not content:
+        log("Failed to generate content. Exiting.")
+        return False
+
+    log(f"  Title   : {content.get('title')}")
+    log(f"  Keywords: {content.get('b_roll_keywords')}")
+
+    # ── 2. Generate Voiceover ───────────────────────────────────────────────
+    log("\n[2/5] Recording Long Voiceover with Edge-TTS...")
+    # Using a slightly calmer voice for long-form? Let's stick to Christopher for now but maybe less speed reduction
+    audio_path, srt_path = generate_voiceover(content.get('script'), filename="long_voiceover.mp3")
+
+    # ── 3. Download Pexels B-Roll ──────────────────────────────────────────
+    log("\n[3/5] Downloading Pexels 16:9 B-Roll...")
+    # For ~10 minutes, we need roughly 50-60 clips if each is 10-12s.
+    # 10 keywords * 6 clips each = 60 clips.
+    keywords = content.get('b_roll_keywords', [])
+    broll_paths, credits = download_pexels_b_roll(keywords, clips_per_keyword=6, progress_callback=progress_callback)
+
+    if not broll_paths:
+        log("Failed to download B-roll. Exiting.")
+        return False
+
+    # ── 4. Assemble Video ──────────────────────────────────────────────────
+    log("\n[4/5] Assembling Final 16:9 Video...")
+    safe_title = re.sub(r'[\\/*?:"<>|#]', "", content.get("title", "video")).strip().replace(" ", "_")
+    output_filename = f"{safe_title[:40]}_long_final.mp4"
+
+    # stitch_video handles landscape/portrait based on source, but we want to ensure 1920x1080
+    # The current core/video_editor.py forces 1080x1920 in some places. I'll need to update it.
+    final_video_path = stitch_video(
+        audio_path, broll_paths,
+        output_filename=output_filename,
+        srt_path=srt_path,
+        orientation="landscape"
+    )
+
+    if not final_video_path:
+        log("\nFAILED to assemble video.")
+        return False
+
+    log(f"\nSUCCESS! Video ready: {final_video_path}")
+
+    # Build description
+    credits_text = "Background Video Credits (Pexels):\n" + "\n".join([f"  {c}" for c in credits])
+    final_desc = content.get('description', '') + f"\n\n{credits_text}"
+
+    # ── 5. DB Logging & Upload ─────────────────────────────────────────────
+    log("\n[5/5] Logging & Uploading...")
+    # Tags
+    video_tags = keywords + ["Dark Psychology", "Shadow Work", "Mindshift", "Human Behavior", "Philosophy"]
+    
+    db_record = log_video(
+        title=content.get('title', ''),
+        topic=topic,
+        script=content.get('script', ''),
+        local_path=final_video_path,
+        description=final_desc,
+        tags=video_tags,
+        status='generated'
+    )
+
+    from core.youtube_uploader import get_authenticated_service, upload_video
+    youtube_service = get_authenticated_service()
+    if youtube_service:
+        yt_id = upload_video(
+            youtube_service,
+            final_video_path,
+            content.get('title'),
+            final_desc,
+            video_tags,
+            privacy_status="public"
+        )
+        if yt_id and db_record:
+            update_video_upload(db_record.get('id'), yt_id)
+            log(f"Successfully uploaded: {yt_id}")
+    else:
+        log("YouTube auth not available. Saved locally.")
+
+    return True
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Indigo Insights Long-Form Generator")
+    parser.add_argument("--topic", type=str, default=None, help="Override topic")
+    args = parser.parse_args()
+    create_long_video(topic=args.topic)
