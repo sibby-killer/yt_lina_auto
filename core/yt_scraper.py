@@ -24,7 +24,7 @@ def download_viral_b_roll(keywords: list, clips_per_keyword: int = 2, progress_c
         
         url = "https://tikwm.com/api/feed/search"
         data = {
-            "keywords": clean_keyword,
+            "keywords": search_query,
             "count": 15, 
             "cursor": 0
         }
