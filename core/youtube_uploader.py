@@ -56,7 +56,9 @@ def get_authenticated_service():
 
 def sanitize_text(text):
     if not text: return ""
-    return text.replace("<", "").replace(">", "")
+    if isinstance(text, list):
+        text = " ".join([str(i) for i in text])
+    return str(text).replace("<", "").replace(">", "")
 
 def upload_video(youtube, file_path, title, description, tags, privacy_status="private"):
     print(f"Uploading: {title}")

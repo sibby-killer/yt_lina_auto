@@ -49,3 +49,12 @@ def cleanup_old_logs(days=3):
         print(f"[DB] Deleted {count} old records.")
     except Exception as e:
         print(f"[DB] Cleanup failed: {e}")
+
+def get_used_topics():
+    if not supabase: return []
+    try:
+        result = supabase.table("videos").select("topic").execute()
+        return [row['topic'] for row in result.data] if result.data else []
+    except Exception as e:
+        print(f"[DB] Failed to fetch used topics: {e}")
+        return []

@@ -181,10 +181,10 @@ def get_next_topic(used_topics=None):
 
 def get_used_topics_from_db():
     """
-    Placeholder for Supabase fetching of previously used topics.
+    Fetches previously used topics from Supabase.
     """
-    # For now, we return empty so it picks from the pool
-    return []
+    from core.supabase_db import get_used_topics
+    return get_used_topics()
 
 if __name__ == "__main__":
     print(f"Total Viral Topics: {len(FALLBACK_TOPICS)}")
