@@ -23,7 +23,7 @@ BASE_HASHTAGS = (
 )
 
 
-def generate_video_content(topic: str = "how to read anyone instantly") -> dict | None:
+def generate_video_content(topic: str) -> dict | None:
     """
     Uses Groq Llama-3 to generate high-intensity "Psycholo Secrets" style scripts.
     formula: 15s Hook/Build-up -> 60-70s 3-Step Trick Breakdown -> 10s Scarcity CTA.
@@ -143,8 +143,3 @@ Return ONLY valid JSON:
     except Exception as e:
         print(f"[Groq] Long-form error: {e}")
         return None
-
-if __name__ == "__main__":
-    test = generate_video_content("How to make someone obsessed with you")
-    if test:
-        print(json.dumps(test, indent=2))

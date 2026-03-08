@@ -186,6 +186,4 @@ def get_used_topics_from_db():
     from core.supabase_db import get_used_topics
     return get_used_topics()
 
-if __name__ == "__main__":
-    print(f"Total Viral Topics: {len(FALLBACK_TOPICS)}")
-    print(f"Sample Topic: {get_next_topic()}")
+    return get_used_topics()

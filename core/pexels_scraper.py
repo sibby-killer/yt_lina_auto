@@ -83,8 +83,3 @@ def download_pexels_b_roll(keywords: list, clips_per_keyword: int = 3, progress_
             log(f"[Pexels ERROR] Failed to fetch {keyword}: {e}")
             
     return downloaded_files, credits
-
-if __name__ == "__main__":
-    # Quick test
-    files, creators = download_pexels_b_roll(["dark noir animation", "cinematic rain anime"], clips_per_keyword=1)
-    print(f"Downloaded {len(files)} files. Credits: {creators}")
