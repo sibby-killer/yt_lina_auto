@@ -432,6 +432,67 @@ Study this example. Notice:
 - Empowerment at the end
 - Urgency CTA
 Every script you generate must match this quality level.
+
+=== PINNED COMMENT GENERATION ===
+For every script you generate, also create a unique pinned comment for that specific video.
+The pinned comment must:
+1. Be directly related to the specific topic of that video
+2. Ask a thought-provoking question that makes viewers want to reply
+3. Feel like the creator genuinely engaging with the audience
+4. Be 1-3 sentences maximum
+5. Use a conversational casual tone with personality
+6. Include 1-2 relevant emojis maximum (not excessive)
+7. Make viewers feel their opinion matters
+8. Create debate or discussion potential
+9. NEVER mention links, bio, masterclass, courses, or products
+10. NEVER be the same generic comment for every video
+
+GOOD COMMENT EXAMPLES:
+- For a lying detection video: "Be honest... have you ever caught someone lying using body language and they had NO idea you knew? 👀 Drop your story below"
+- For a manipulation video: "What is the most manipulative thing someone has ever done to you? I will go first... 🧠"
+- For an attraction video: "Real talk... have you ever used any of these psychology tricks without even knowing it? 😏"
+- For a confidence video: "What is the ONE thing that instantly kills your confidence? Let us talk about it 👇"
+- For a narcissist video: "Have you ever dealt with a narcissist? What was the moment you finally realized what was happening? 🤔"
+
+BAD COMMENT EXAMPLES (DO NOT DO THIS):
+- "Which psychological trick do you think is the MOST dangerous?" (too generic, same for every video)
+- "Follow us for more!" (promotional, no engagement value)
+- "Check the link in bio!" (no link exists, sounds spammy)
+- "Like and subscribe!" (generic, low effort)
+
+The comment must make someone think "I actually want to answer this" not "this is obviously a bot comment."
+
+=== DESCRIPTION GENERATION (SHORTS) ===
+Generate a YouTube Shorts description that is SEO-optimized and professional.
+
+SHORT DESCRIPTION FORMAT:
+Line 1: [Powerful hook sentence about the topic] 🧠
+Line 2: [What the viewer will learn — naturally include 2-3 SEO keywords]
+[Empty line]
+Line 3: [Engagement question specific to the topic — ask viewers to comment]
+[Empty line]
+🔔 Subscribe to @AshleyMindShift for more dark psychology secrets
+👁️ Turn on notifications so you never miss a revelation
+[Empty line]
+{{CREDITS_PLACEHOLDER}}
+[Empty line]
+[10-15 relevant hashtags]
+
+SEO KEYWORDS TO NATURALLY INCLUDE (pick 3-5 relevant ones per video):
+dark psychology, psychology tricks, manipulation tactics, mind games,
+body language secrets, human behavior, relationship psychology,
+emotional intelligence, mental strength, narcissist traits,
+psychological tricks, how to read people, dark psychology facts,
+psychology of attraction, self improvement, personal growth,
+stoic mindset, confidence psychology, social skills, influence tactics
+
+DO NOT include in descriptions:
+- External links of any kind
+- "Link in bio" or "Link in description"
+- Masterclass or course or product references
+- Affiliate links or promotions
+- Fake credits or made-up creator names
+- The {{CREDITS_PLACEHOLDER}} must appear EXACTLY as written — the code will replace it later
 """
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -464,17 +525,19 @@ CRITICAL REQUIREMENTS:
 
 ALSO PROVIDE:
 - A viral clickbait title (include 1-2 relevant hashtags)
-- A short compelling description (2-3 sentences that hook the viewer)
+- A SEO-optimized description following the SHORT FORMAT in your system instructions (must include {{CREDITS_PLACEHOLDER}} exactly where credits go)
+- A unique pinned comment for this specific video topic
 - Exactly 5 b-roll search keywords for finding dark aesthetic anime or animated clips
   (each keyword must include words like: anime, animated, dark, cartoon, 3d, cinematic, noir)
 
 Return ONLY valid JSON:
 {{
     "title": "Your viral title here #DarkPsychology #Manipulation",
-    "description": "Compelling 2-3 sentence description.",
+    "description": "SEO-optimized short description following the SHORT FORMAT with {{CREDITS_PLACEHOLDER}} included",
     "script": "The complete flowing natural script with ... pauses throughout...",
     "topic_used": "{topic}",
     "psychology_concept": "Name of the psychology concept used",
+    "pinned_comment": "A unique engaging question or conversation starter specific to this video topic",
     "b_roll_keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"]
 }}
 """
@@ -628,6 +691,70 @@ SECTION 6 - THE FINAL REVELATION (9:00 to 10:00) — MINIMUM 150 words
 - DO NOT use emojis or hashtags in the script body
 - DO NOT use incorrect psychology concepts
 - DO NOT write a script that could be delivered in under 8 minutes
+
+=== PINNED COMMENT GENERATION ===
+For this video also generate a unique pinned comment.
+The comment must:
+1. Be directly related to the specific topic of this video
+2. Ask a thought-provoking question that makes viewers want to reply
+3. Feel like the creator genuinely engaging with the audience
+4. Be 1-3 sentences maximum
+5. Conversational tone with 1-2 relevant emojis
+6. Create debate or discussion potential
+7. NEVER mention links, bio, masterclass, courses, or products
+
+=== DESCRIPTION GENERATION (LONG-FORM) ===
+Generate a professional comprehensive YouTube description that is SEO-optimized.
+
+LONG DESCRIPTION FORMAT:
+[Powerful hook — what this video reveals] 🧠
+[2-3 sentence overview with naturally included SEO keywords]
+
+⏱️ TIMESTAMPS:
+0:00 — [Compelling opening section title]
+1:00 — [Section 2 title]
+3:00 — [Section 3 title]
+6:00 — [Section 4 title]
+8:00 — [Section 5 title]
+9:00 — [Section 6 title]
+
+💡 KEY CONCEPTS COVERED:
+• [Psychology concept 1 with brief description]
+• [Psychology concept 2 with brief description]
+• [Psychology concept 3 with brief description]
+• [Psychology concept 4 with brief description]
+• [Psychology concept 5 with brief description]
+
+🧠 ABOUT THIS VIDEO:
+[2-3 sentences expanding on the topic with SEO keywords. Make it sound valuable and intriguing.]
+
+💬 JOIN THE CONVERSATION:
+[Engagement question specific to the video — different from the pinned comment]
+
+🔔 Subscribe to @AshleyMindShift for weekly dark psychology deep-dives
+👁️ Turn on notifications so you never miss a revelation
+
+{{CREDITS_PLACEHOLDER}}
+
+📌 TAGS:
+[15-20 relevant hashtags]
+
+SEO KEYWORDS FOR LONG-FORM (pick 5-8 relevant ones per video):
+dark psychology, dark psychology explained, psychology tricks, manipulation tactics,
+mind games psychology, body language secrets, human behavior psychology,
+relationship psychology tips, emotional intelligence, mental strength mindset,
+narcissist manipulation tactics, psychological tricks that work,
+how to read people, dark psychology facts, psychology of attraction,
+self improvement psychology, personal growth mindset, stoic philosophy,
+confidence psychology tips, social skills psychology, influence and persuasion,
+emotional manipulation signs, toxic relationship psychology, mind control techniques
+
+DO NOT include:
+- External links of any kind
+- "Link in bio" or "Link in description"
+- Masterclass or course or product references
+- Fake credits or made-up creator names
+- The {{CREDITS_PLACEHOLDER}} must appear EXACTLY as written — code will replace it later
 """
 
     user_prompt = f"""
@@ -656,18 +783,19 @@ SECTION STRUCTURE TO FOLLOW:
 
 ALSO PROVIDE:
 - A viral deep-dive title with hashtags
-- A comprehensive YouTube description with timestamps matching the sections above
-- The description should be engaging and hook readers not just list timestamps
+- A comprehensive YouTube description following the LONG FORMAT in your system instructions (must include {{CREDITS_PLACEHOLDER}} exactly where credits go, with timestamps matching the sections above)
+- A unique pinned comment for this specific video topic
 - Exactly 10 b-roll keywords for dark aesthetic animated or anime clips on Pexels
   (each keyword must include: anime, animated, dark, cartoon, cinematic, noir, 3d, cgi)
 
 Return ONLY valid JSON:
 {{
     "title": "Deep dive title here #DarkPsychology #MindGames",
-    "description": "Engaging description with timestamps...",
+    "description": "SEO-optimized long description following the LONG FORMAT with {{CREDITS_PLACEHOLDER}} included",
     "script": "The full 1500-2000 word script flowing naturally with ... pauses...",
     "topic_used": "{topic}",
     "word_count": approximate_word_count_as_integer,
+    "pinned_comment": "A unique engaging question or conversation starter specific to this video topic",
     "b_roll_keywords": ["kw1", "kw2", "kw3", "kw4", "kw5", "kw6", "kw7", "kw8", "kw9", "kw10"]
 }}
 
@@ -739,6 +867,59 @@ REMEMBER: The script MUST be 1500-2000 words. Count your words. If it is under 1
 # ─────────────────────────────────────────────────────────────────────────────
 #  UTILITY FUNCTIONS
 # ─────────────────────────────────────────────────────────────────────────────
+
+def format_credits(credit_list: list) -> str:
+    """
+    Takes a list of Pexels creator names and returns a professionally formatted
+    credits string ready to be inserted into a video description.
+
+    Args:
+        credit_list: e.g. ["Pixabay", "cottonbro studio", "Miguel Padrinan"]
+
+    Returns:
+        Formatted credits string, or empty string if list is empty.
+    """
+    if not credit_list:
+        return ""
+
+    # Deduplicate while preserving order
+    seen = set()
+    unique_credits = []
+    for credit in credit_list:
+        if credit not in seen:
+            seen.add(credit)
+            unique_credits.append(credit)
+
+    credits_header = "🎬 Background Footage Credits:"
+    credits_body   = "\n".join([f"  • {name} (Pexels)" for name in unique_credits])
+    credits_footer = "All background footage sourced from Pexels.com under free license."
+
+    return f"{credits_header}\n{credits_body}\n{credits_footer}"
+
+
+def insert_credits_into_description(description: str, credit_list: list) -> str:
+    """
+    Replaces the {{CREDITS_PLACEHOLDER}} token in an AI-generated description
+    with properly formatted Pexels credits.
+
+    Args:
+        description: The AI-generated description containing {{CREDITS_PLACEHOLDER}}.
+        credit_list: List of Pexels creator name strings collected during clip download.
+
+    Returns:
+        Final description string with credits substituted in.
+    """
+    formatted_credits = format_credits(credit_list)
+
+    if "{{CREDITS_PLACEHOLDER}}" in description:
+        return description.replace("{{CREDITS_PLACEHOLDER}}", formatted_credits)
+
+    # Safety: if placeholder somehow missing, append credits at end
+    if formatted_credits:
+        return f"{description}\n\n{formatted_credits}"
+    return description
+
+
 def get_remaining_topics() -> int:
     used = load_used_topics()
     return len([t for t in VIRAL_TOPICS if t not in used])

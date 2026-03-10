@@ -82,13 +82,12 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
 
     log(f"\nSUCCESS! Video ready: {final_video_path}")
 
-    # Build full SEO description
-    credits_text = "Background Video Credits:\n" + "\n".join([f"  {c}" for c in credits])
-    hashtags = content.get('hashtags', '')
-    final_desc = content.get('description', '')
-    if hashtags and hashtags not in final_desc:
-        final_desc += f"\n\n{hashtags}"
-    final_desc += f"\n\n{credits_text}"
+    # Build full SEO description with Pexels credits inserted at placeholder
+    from core.ai_script import insert_credits_into_description
+    final_desc = insert_credits_into_description(
+        content.get('description', ''),
+        credits  # list of creator names returned by download_viral_b_roll
+    )
 
     # ── 5. Supabase Logging ────────────────────────────────────────────────
     log("\n[5/5] Logging to Supabase & Uploading to YouTube...")
@@ -133,9 +132,10 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
             if plist_id:
                 add_video_to_playlist(youtube_service, yt_id, plist_id)
             
-            # Post pinned comment
+            # Post AI-generated pinned comment (falls back to pool if missing)
             from core.auto_comment import post_pinned_comment
-            post_pinned_comment(youtube_service, yt_id)
+            pinned_comment = content.get("pinned_comment", None)
+            post_pinned_comment(youtube_service, yt_id, comment_text=pinned_comment)
             log(f"Successfully uploaded to YouTube! ID: {yt_id}")
     else:
         log("[Upload] YouTube auth not available — video saved locally only.")
