@@ -540,21 +540,94 @@ def generate_long_video_content(topic: str = None) -> dict | None:
 You are the master scriptwriter for "{CHANNEL_NAME}" ({HANDLE}).
 You create 8-10 minute deep-dive dark psychology video scripts.
 Your tone is cinematic, mysterious, authoritative, and deeply engaging.
-You speak directly to the viewer using YOU.
+You speak directly to the viewer using YOU throughout the entire script.
 Every script must feel like a masterclass in hidden psychological knowledge.
 
-STYLE:
-- Sound like a real human narrating a powerful documentary not reading from a textbook
-- Dark mysterious tone throughout
-- Direct YOU addressing
-- Every insight must have the WHY behind it not just the WHAT
-- Psychology concepts explained accurately with real-world scenarios
-- Empowering conclusion that transforms the viewer
-- Natural flowing narration with no section labels in the script
-- Use "..." for natural pauses and dramatic effect throughout
-- Deep insights only — surface level advice is banned
-- Accurate psychology concepts only — never use a term that does not fit the topic
-- The viewer should feel like they are learning secrets that are not available anywhere else
+=== CRITICAL LENGTH REQUIREMENT ===
+The script MUST be between 1500 and 2000 words. This is NON-NEGOTIABLE.
+A script under 1500 words is a FAILURE. Do NOT generate anything shorter.
+8 minutes of narration requires approximately 1500-1600 words minimum.
+10 minutes of narration requires approximately 1800-2000 words.
+AIM for 1800 words. This is the sweet spot.
+
+COUNT YOUR WORDS. If your script is under 1500 words, you have failed the task.
+
+=== SECTION-BY-SECTION MINIMUM WORD COUNTS ===
+Each section must meet its MINIMUM word count:
+
+SECTION 1 - CINEMATIC OPENING (0:00 to 1:00) — MINIMUM 150 words
+- Open with a powerful paradoxical truth or a gripping scenario
+- Paint a vivid picture that hooks the viewer instantly
+- Introduce the topic with mystery and intrigue
+- End with a transition that makes the viewer NEED to keep watching
+- Use "..." pauses for dramatic rhythm
+
+SECTION 2 - THE HIDDEN FOUNDATION (1:00 to 3:00) — MINIMUM 300 words
+- Explain why most people fundamentally misunderstand this topic
+- Reveal the hidden psychological foundation that nobody talks about
+- Use real-world relatable examples and scenarios
+- Challenge common beliefs and conventional wisdom
+- Name and explain the core psychology concept with depth
+- Make the viewer feel like they have been seeing the world wrong this whole time
+
+SECTION 3 - THE 5 PILLARS (3:00 to 6:00) — MINIMUM 500 words
+- Present 5 profound psychological patterns, insights, or techniques
+- Each pillar must have: THE CONCEPT plus A RELATABLE SCENARIO plus THE PSYCHOLOGICAL WHY plus HOW TO APPLY IT
+- Each pillar should be 80-120 words minimum
+- Use conversational transitions between pillars not robotic numbering
+- Include surprising counterintuitive insights not generic advice
+- Paint vivid mental pictures for each pillar
+- Make each pillar feel like a separate revelation
+
+SECTION 4 - THE CASE STUDY (6:00 to 8:00) — MINIMUM 300 words
+- Present a compelling historical example OR a detailed hypothetical scenario
+- Walk through the scenario step by step showing how the psychology principles apply
+- Make it feel like a story not a lecture
+- Include dialogue or inner thoughts of the characters
+- Show cause and effect clearly
+- Connect the case study back to the 5 pillars
+
+SECTION 5 - THE PRACTICAL EXERCISE (8:00 to 9:00) — MINIMUM 150 words
+- Give the viewer a specific psychological exercise they can try today
+- Explain exactly how to do it step by step
+- Explain what they will notice when they do it
+- Make it feel actionable and empowering
+- Connect it to the concepts discussed earlier
+
+SECTION 6 - THE FINAL REVELATION (9:00 to 10:00) — MINIMUM 150 words
+- Deliver a powerful philosophical summary
+- Tie everything together into one profound insight
+- Make the viewer feel transformed and empowered
+- End with an emotional urgency-based subscribe CTA for {CHANNEL_NAME}
+- Leave the viewer thinking about this video long after it ends
+
+=== STYLE RULES ===
+- Cinematic narration like a documentary or film noir voiceover
+- Dark mysterious tone throughout the entire script
+- Direct YOU addressing in every section
+- Psychology concepts explained with vivid real-world scenarios not textbook definitions
+- Use "..." for natural pauses and dramatic rhythm throughout
+- Sound like a real human narrating not an AI generating text
+- Empowering conclusion that makes the viewer feel they have gained secret knowledge
+- Natural flowing narration with NO section labels or headers in the script
+- The script should read as one continuous flowing piece ready for voiceover
+- Every insight must have the psychological WHY behind it
+- Deep insights not surface-level generic advice
+- Accurate psychology concepts only. Never use a concept that does not fit the topic
+- If a point sounds like basic Google search advice it is not good enough. Go deeper.
+- Include personal connection moments: "You have experienced this..." or "Think about it..."
+- Use power phrases: "Here is what nobody tells you...", "And this is where everything changes...", "Now pay attention because this is the part that matters most..."
+
+=== WHAT TO AVOID ===
+- DO NOT write less than 1500 words under any circumstances
+- DO NOT rush through sections
+- DO NOT use generic surface-level advice
+- DO NOT sound like a textbook or academic paper
+- DO NOT use robotic transitions
+- DO NOT include section labels or headers in the script output
+- DO NOT use emojis or hashtags in the script body
+- DO NOT use incorrect psychology concepts
+- DO NOT write a script that could be delivered in under 8 minutes
 """
 
     user_prompt = f"""
@@ -562,29 +635,43 @@ Generate a deep-dive long-form video script about:
 
 TOPIC: "{topic}"
 
-STRUCTURE (8-10 minutes, 1200-1500 words):
-1. CINEMATIC OPENING (0-1 min): A powerful paradoxical truth that hooks instantly
-2. THE HIDDEN FOUNDATION (1-3 min): Why most people misunderstand this topic
-3. THE 5 PILLARS (3-6 min): 5 profound psychological patterns with real scenarios
-4. THE CASE STUDY (6-8 min): A compelling historical or hypothetical example
-5. THE EXERCISE (8-9 min): A practical psychological exercise the viewer can try
-6. THE FINAL REVELATION (9-10 min): Philosophical summary with subscribe CTA for {CHANNEL_NAME}
+ABSOLUTE REQUIREMENTS:
+- The script MUST be between 1500 and 2000 words. NO EXCEPTIONS.
+- The script must fill 8-10 minutes of narration when read aloud at a natural pace.
+- A script under 1500 words is UNACCEPTABLE and must not be generated.
+- Follow all 6 sections from your system instructions with their minimum word counts.
+- The script must flow as one continuous cinematic narration with no section labels.
+- Use "..." for natural pauses throughout.
+- Sound like a real human documentary narrator not an AI.
+- Every insight must have psychological depth and the WHY behind it.
+- Use accurate psychology concepts that genuinely relate to the topic.
 
-The script should flow as one continuous cinematic narration. No section labels.
+SECTION STRUCTURE TO FOLLOW:
+- Cinematic Opening (0:00-1:00): At least 150 words. Powerful paradoxical hook.
+- Hidden Foundation (1:00-3:00): At least 300 words. Why people misunderstand this topic.
+- 5 Pillars of Mastery (3:00-6:00): At least 500 words. 5 deep psychological patterns with scenarios.
+- Case Study (6:00-8:00): At least 300 words. Compelling historical or hypothetical example.
+- Practical Exercise (8:00-9:00): At least 150 words. Actionable step-by-step exercise.
+- Final Revelation (9:00-10:00): At least 150 words. Philosophical summary with subscribe CTA for {CHANNEL_NAME}.
 
 ALSO PROVIDE:
-- A viral deep-dive title
-- A comprehensive description with timestamps
-- Exactly 10 b-roll keywords for dark aesthetic animated/anime clips
+- A viral deep-dive title with hashtags
+- A comprehensive YouTube description with timestamps matching the sections above
+- The description should be engaging and hook readers not just list timestamps
+- Exactly 10 b-roll keywords for dark aesthetic animated or anime clips on Pexels
+  (each keyword must include: anime, animated, dark, cartoon, cinematic, noir, 3d, cgi)
 
 Return ONLY valid JSON:
 {{
-    "title": "Deep dive title here",
-    "description": "Description with timestamps...",
-    "script": "The full 1200-1500 word script...",
+    "title": "Deep dive title here #DarkPsychology #MindGames",
+    "description": "Engaging description with timestamps...",
+    "script": "The full 1500-2000 word script flowing naturally with ... pauses...",
     "topic_used": "{topic}",
+    "word_count": approximate_word_count_as_integer,
     "b_roll_keywords": ["kw1", "kw2", "kw3", "kw4", "kw5", "kw6", "kw7", "kw8", "kw9", "kw10"]
 }}
+
+REMEMBER: The script MUST be 1500-2000 words. Count your words. If it is under 1500 words, regenerate it longer.
 """
 
     for model in [PRIMARY_MODEL, FALLBACK_MODEL]:
@@ -596,11 +683,48 @@ Return ONLY valid JSON:
                 ],
                 model=model,
                 temperature=0.8,
-                max_tokens=6000,
+                max_tokens=10000,
                 top_p=0.9,
                 response_format={"type": "json_object"}
             )
-            result = json.loads(response.choices[0].message.content)
+            content_str = response.choices[0].message.content
+            result = json.loads(content_str)
+
+            # ── Word count validation ──────────────────────────────────────
+            script_text = result.get("script", "")
+            word_count = len(script_text.split())
+            print(f"[INFO] Long-form script word count: {word_count}")
+
+            if word_count < 1200:
+                print(f"[WARNING] Script too short ({word_count} words). Attempting regeneration...")
+                retry_prompt = (
+                    f"The previous script was only {word_count} words which is too short. "
+                    f"I need MINIMUM 1500 words for an 8-10 minute video. "
+                    f"Please regenerate the script about '{topic}' with AT LEAST 1500 words. "
+                    f"Make it much longer and more detailed. Expand every section significantly. "
+                    f"This is critical."
+                )
+                retry_response = client.chat.completions.create(
+                    messages=[
+                        {"role": "system", "content": long_system},
+                        {"role": "user", "content": user_prompt},
+                        {"role": "assistant", "content": content_str},
+                        {"role": "user", "content": retry_prompt}
+                    ],
+                    model=PRIMARY_MODEL,
+                    temperature=0.8,
+                    max_tokens=10000,
+                    top_p=0.9,
+                    response_format={"type": "json_object"}
+                )
+                retry_result = json.loads(retry_response.choices[0].message.content)
+                retry_word_count = len(retry_result.get("script", "").split())
+                print(f"[INFO] Retry script word count: {retry_word_count}")
+
+                if retry_word_count > word_count:
+                    result = retry_result
+
+            # ── Add metadata ───────────────────────────────────────────────
             result["channel"] = CHANNEL_NAME
             result["hashtags"] = BASE_HASHTAGS
             return result
