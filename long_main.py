@@ -29,37 +29,29 @@ def create_long_video(topic: str = None, progress_callback=None) -> bool:
     except Exception as e:
         print(f"[Cleanup] Failed: {e}")
 
-    # Auto-pick topic if not supplied
-    if not topic:
-        from core.topic_generator import get_next_topic, get_used_topics_from_db
-        used = get_used_topics_from_db()
-        log(f"[Topic] Found {len(used)} used topics in DB.")
-        topic = get_next_topic(used_topics=used)
-        log(f"[Topic] Selected NEW topic: {topic}")
-
-    log(f"\n===========================================")
-    log(f"  {CHANNEL_NAME.upper()} LONG-FORM: {topic[:70]}")
-    log(f"===========================================\n")
-
-    # ── 1. Generate Long Script & Metadata ───────────────────────────────────
+    # ── 1. Generate Long Script & Metadata ──────────────────────────────────────
+    # ai_script.py auto-picks a topic if none is passed
     log("[1/5] Brainstorming Long-Form with Groq...")
     content = generate_long_video_content(topic)
     if not content:
         log("Failed to generate content. Exiting.")
         return False
 
+    # Read the topic the AI actually used (may have been auto-selected)
+    topic = content.get('topic_used', topic) or topic
+
+    log(f"\n===========================================")
+    log(f"  {CHANNEL_NAME.upper()} LONG-FORM: {topic[:70]}")
+    log(f"===========================================\n")
     log(f"  Title   : {content.get('title')}")
     log(f"  Keywords: {content.get('b_roll_keywords')}")
 
     # ── 2. Generate Voiceover ───────────────────────────────────────────────
     log("\n[2/5] Recording Long Voiceover with Edge-TTS...")
-    # Using a slightly calmer voice for long-form? Let's stick to Christopher for now but maybe less speed reduction
     audio_path, srt_path = generate_voiceover(content.get('script'), filename="long_voiceover.mp3")
 
     # ── 3. Download Pexels B-Roll ──────────────────────────────────────────
     log("\n[3/5] Downloading Pexels 16:9 B-Roll...")
-    # For ~10 minutes, we need roughly 40-50 clips if each is 12-15s.
-    # 10 keywords * 5 clips each = 50 clips.
     keywords = content.get('b_roll_keywords', [])
     broll_paths, credits = download_pexels_b_roll(keywords, clips_per_keyword=5, progress_callback=progress_callback)
 
@@ -94,9 +86,13 @@ def create_long_video(topic: str = None, progress_callback=None) -> bool:
 
     log(f"\nSUCCESS! Video ready: {final_video_path}")
 
-    # Build description
+    # Build description with hashtags and credits
     credits_text = "Background Video Credits (Pexels):\n" + "\n".join([f"  {c}" for c in credits])
-    final_desc = content.get('description', '') + f"\n\n{credits_text}"
+    hashtags = content.get('hashtags', '')
+    final_desc = content.get('description', '')
+    if hashtags and hashtags not in final_desc:
+        final_desc += f"\n\n{hashtags}"
+    final_desc += f"\n\n{credits_text}"
 
     # ── 5. DB Logging & Upload ─────────────────────────────────────────────
     log("\n[5/5] Logging & Uploading...")

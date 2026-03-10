@@ -29,24 +29,16 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
     except Exception as e:
         print(f"[Cleanup] Failed: {e}")
 
-    # Auto-pick topic if not supplied
-    if not topic:
-        from core.topic_generator import get_next_topic, get_used_topics_from_db
-        used = get_used_topics_from_db()
-        log(f"[Topic] Found {len(used)} used topics in DB.")
-        topic = get_next_topic(used_topics=used)
-        log(f"[Topic] Selected NEW topic: {topic}")
-
-    log(f"\n===========================================")
-    log(f"  {CHANNEL_NAME.upper()}: {topic[:70]}")
-    log(f"===========================================\n")
-
     # ── 1. Generate Script & Metadata ──────────────────────────────────────
+    # ai_script.py auto-picks a topic if none is passed
     log("[1/5] Brainstorming with Groq...")
     content = generate_video_content(topic)
     if not content:
         log("Failed to generate content. Exiting.")
         return False
+
+    # Read the topic the AI actually used (may have been auto-selected)
+    topic = content.get('topic_used', topic) or topic
 
     log(f"  Title   : {content.get('title')}")
     log(f"  Keywords: {content.get('b_roll_keywords')}")
@@ -92,11 +84,11 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
 
     # Build full SEO description
     credits_text = "Background Video Credits:\n" + "\n".join([f"  {c}" for c in credits])
+    hashtags = content.get('hashtags', '')
     final_desc = content.get('description', '')
-    if "[CREDITS_HERE]" in final_desc:
-        final_desc = final_desc.replace("[CREDITS_HERE]", credits_text)
-    else:
-        final_desc += f"\n\n{credits_text}"
+    if hashtags and hashtags not in final_desc:
+        final_desc += f"\n\n{hashtags}"
+    final_desc += f"\n\n{credits_text}"
 
     # ── 5. Supabase Logging ────────────────────────────────────────────────
     log("\n[5/5] Logging to Supabase & Uploading to YouTube...")
