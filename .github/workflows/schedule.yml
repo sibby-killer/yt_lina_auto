@@ -18,6 +18,8 @@ on:
 jobs:
   auto-generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # Required to push video_database.json back to repo
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
