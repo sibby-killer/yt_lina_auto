@@ -493,6 +493,12 @@ DO NOT include in descriptions:
 - Affiliate links or promotions
 - Fake credits or made-up creator names
 - The {{CREDITS_PLACEHOLDER}} must appear EXACTLY as written — the code will replace it later
+
+CRITICAL FORMATTING RULE: The description MUST use actual newline characters (\n) to create line breaks.
+Every section must start on a new line. Never put everything on one line separated by commas or periods.
+Use proper paragraph spacing with empty lines between sections.
+Example correct format (using \n):
+"Hook sentence about the topic 🧠\nWhat the viewer will learn with SEO keywords\n\nEngagement question for viewers? 👇\n\n🔔 Subscribe to @AshleyMindShift for more dark psychology secrets\n👁️ Turn on notifications so you never miss a revelation\n\n{{CREDITS_PLACEHOLDER}}\n\n#DarkPsychology #Hashtag2 #Hashtag3"
 """
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -755,6 +761,11 @@ DO NOT include:
 - Masterclass or course or product references
 - Fake credits or made-up creator names
 - The {{CREDITS_PLACEHOLDER}} must appear EXACTLY as written — code will replace it later
+
+CRITICAL FORMATTING RULE: The description MUST use actual newline characters (\n) to create line breaks.
+Every section must start on a new line. Timestamps must each be on their own line. Bullet points each on their own line.
+Never put multiple sections or timestamps on one line separated by commas or periods.
+Use proper paragraph spacing with empty lines between sections.
 """
 
     user_prompt = f"""
@@ -871,43 +882,41 @@ REMEMBER: The script MUST be 1500-2000 words. Count your words. If it is under 1
 def format_credits(credit_list: list) -> str:
     """
     Takes a list of Pexels creator names and returns a professionally formatted
-    credits string ready to be inserted into a video description.
-
-    Args:
-        credit_list: e.g. ["Pixabay", "cottonbro studio", "Miguel Padrinan"]
-
-    Returns:
-        Formatted credits string, or empty string if list is empty.
+    credits block for inserting into video descriptions.
+    Strips any pre-existing '(Pexels)' suffix before re-adding it cleanly
+    to prevent '(Pexels) (Pexels)' duplication.
     """
+    import re as _re
     if not credit_list:
         return ""
 
-    # Deduplicate while preserving order
     seen = set()
     unique_credits = []
     for credit in credit_list:
-        if credit not in seen:
-            seen.add(credit)
-            unique_credits.append(credit)
+        if not credit or not credit.strip():
+            continue
+        # Strip any existing (Pexels) suffix (case-insensitive) to avoid duplication
+        clean = _re.sub(r'\s*\(pexels\)\s*', '', credit.strip(), flags=_re.IGNORECASE).strip()
+        if not clean:
+            continue
+        if clean.lower() not in seen:
+            seen.add(clean.lower())
+            unique_credits.append(clean)
+
+    if not unique_credits:
+        return ""
 
     credits_header = "🎬 Background Footage Credits:"
     credits_body   = "\n".join([f"  • {name} (Pexels)" for name in unique_credits])
     credits_footer = "All background footage sourced from Pexels.com under free license."
 
-    return f"{credits_header}\n{credits_body}\n{credits_footer}"
+    return f"\n\n{credits_header}\n{credits_body}\n{credits_footer}"
 
 
 def insert_credits_into_description(description: str, credit_list: list) -> str:
     """
     Replaces the {{CREDITS_PLACEHOLDER}} token in an AI-generated description
     with properly formatted Pexels credits.
-
-    Args:
-        description: The AI-generated description containing {{CREDITS_PLACEHOLDER}}.
-        credit_list: List of Pexels creator name strings collected during clip download.
-
-    Returns:
-        Final description string with credits substituted in.
     """
     formatted_credits = format_credits(credit_list)
 
@@ -916,7 +925,50 @@ def insert_credits_into_description(description: str, credit_list: list) -> str:
 
     # Safety: if placeholder somehow missing, append credits at end
     if formatted_credits:
-        return f"{description}\n\n{formatted_credits}"
+        return f"{description}\n{formatted_credits}"
+    return description
+
+
+def fix_description_formatting(description: str) -> str:
+    """
+    Safety-net post-processor that ensures the AI description has proper line breaks.
+    The AI sometimes returns everything on one line despite prompt instructions.
+    This function fixes common formatting issues before the description goes to YouTube.
+    """
+    import re as _re
+    if not description:
+        return description
+
+    # Section headers that must always start on a new line with blank line before them
+    section_markers = [
+        "⏱️ TIMESTAMPS:", "⏱️ Timestamps:",
+        "💡 KEY CONCEPTS COVERED:", "💡 Key Concepts Covered:", "💡 KEY CONCEPTS:",
+        "🧠 ABOUT THIS VIDEO:", "🧠 About This Video:",
+        "💬 JOIN THE CONVERSATION:", "💬 Join The Conversation:",
+        "🔔 Subscribe",
+        "👁️ Turn on",
+        "📌 TAGS:", "📌 Tags:",
+        "🎬 Background Footage Credits:",
+        "🎬 WATCH", "🎬 Watch",
+        "{{CREDITS_PLACEHOLDER}}",
+    ]
+    for marker in section_markers:
+        if marker in description:
+            description = description.replace(marker, f"\n\n{marker}")
+
+    # Each timestamp entry on its own line: "0:00 —" or "1:00 -"
+    description = _re.sub(r'([,.\s])(\d{1,2}:\d{2}\s*[—\-])', r'\n\2', description)
+
+    # Each bullet point on its own line
+    description = _re.sub(r'([,.\s])(•)', r'\n\2', description)
+
+    # Collapse 4+ consecutive newlines to max 2
+    description = _re.sub(r'\n{4,}', '\n\n\n', description)
+
+    # Strip trailing whitespace from each line
+    lines = [line.rstrip() for line in description.split('\n')]
+    description = '\n'.join(lines).strip()
+
     return description
 
 

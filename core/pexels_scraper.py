@@ -78,8 +78,9 @@ def download_pexels_b_roll(keywords: list, clips_per_keyword: int = 3, progress_
                     
                     if os.path.exists(out_path) and os.path.getsize(out_path) > 500 * 1024: # 500KB min for longform
                         downloaded_files.append(out_path)
+                        # Store raw author name only — format_credits() adds "(Pexels)" suffix
                         if author not in credits:
-                            credits.append(f"{author} (Pexels)")
+                            credits.append(author)
                     else:
                         if os.path.exists(out_path): os.remove(out_path)
                 except Exception as dl_err:

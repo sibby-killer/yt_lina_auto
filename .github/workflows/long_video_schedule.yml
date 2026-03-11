@@ -52,3 +52,11 @@ jobs:
         run: |
           echo "${{ secrets.TIKTOK_COOKIES_JSON }}" > tiktok_cookies.txt
           python long_main.py
+
+      - name: Commit video database
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add video_database.json used_topics.json || true
+          git diff --quiet && git diff --staged --quiet || git commit -m "[bot] Update video database and used topics"
+          git push

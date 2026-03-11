@@ -86,12 +86,21 @@ def create_long_video(topic: str = None, progress_callback=None) -> bool:
 
     log(f"\nSUCCESS! Video ready: {final_video_path}")
 
-    # Build full SEO description with Pexels credits inserted at placeholder
-    from core.ai_script import insert_credits_into_description
-    final_desc = insert_credits_into_description(
-        content.get('description', ''),
-        credits  # list of creator names returned by download_pexels_b_roll
+    # ── Description Processing Pipeline ──────────────────────────────────────
+    # Step 1: Fix AI formatting (ensures proper newlines)
+    from core.ai_script import insert_credits_into_description, fix_description_formatting
+    from video_database import add_video_promotion_to_description
+
+    raw_desc       = content.get('description', '')
+    fmt_desc       = fix_description_formatting(raw_desc)
+    # Step 2: Inject cross-promotion links to other long-form videos (skips self)
+    promoted_desc  = add_video_promotion_to_description(
+        fmt_desc, video_type="long_form", current_video_id=None  # ID not yet known at this point
     )
+    # Step 3: Insert Pexels credits at placeholder
+    credited_desc  = insert_credits_into_description(promoted_desc, credits)
+    # Step 4: Final formatting pass after credits insertion
+    final_desc     = fix_description_formatting(credited_desc)
 
     # ── 5. DB Logging & Upload ─────────────────────────────────────────────
     log("\n[5/5] Logging & Uploading...")
@@ -125,6 +134,14 @@ def create_long_video(topic: str = None, progress_callback=None) -> bool:
             from core.auto_comment import post_pinned_comment
             pinned_comment = content.get("pinned_comment", None)
             post_pinned_comment(youtube_service, yt_id, comment_text=pinned_comment)
+            # Track upload in video database for cross-promotion
+            from video_database import add_video_to_database
+            add_video_to_database(
+                video_id=yt_id,
+                title=content.get('title', ''),
+                video_type="long_form",
+                topic=content.get('topic_used', '')
+            )
             log(f"Successfully uploaded: {yt_id}")
     else:
         log("YouTube auth not available. Saved locally.")
