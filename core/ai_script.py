@@ -54,121 +54,22 @@ def reset_used_topics():
 #  100 VIRAL TOPICS LIST
 # ─────────────────────────────────────────────────────────────────────────────
 VIRAL_TOPICS = [
-    # === SOCIAL POWER MOVES (1-15) ===
-    "How to win any argument without saying a single word using silence",
-    "The psychological trick to kill someone's bad joke and embarrass them back",
-    "How to make everyone in the room respect you within 5 seconds",
-    "The dark art of controlling any conversation without people noticing",
+    # === ELITE MINDSET & POWER DYNAMICS ===
+    "The 1 percent rule that keeps the elite in power while you struggle",
+    "How to use dark psychology to make anyone instantly respect you",
+    "The harsh truth about why some people always get what they want",
+    "How to outsmart a manipulator by playing their own game better",
+    "The banned negotiation tactic that forces people to say yes",
+    "Why being too nice is the exact reason you are losing in life",
+    "How to read a room instantly like a billionaire CEO",
+    "The secret body language trick that makes you look high status",
+    "How to manipulate the manipulator and take back your power",
     "Why the most powerful person in the room never speaks first",
-    "How to make someone regret disrespecting you without revenge",
-    "The psychological trick to make anyone agree with you instantly",
-    "How to shut down a narcissist with one simple sentence",
-    "Why people who talk less are perceived as more intelligent and powerful",
-    "The secret body language trick that makes you look high status instantly",
-    "How to make someone feel nervous around you using dark psychology",
-    "The power move that makes bullies instantly back down",
-    "How to dominate any group conversation without being loud",
-    "The psychological trick to make your words unforgettable",
-    "How to read anyone like a book in the first 30 seconds of meeting them",
-
-    # === MANIPULATION AWARENESS (16-30) ===
-    "5 signs someone is emotionally manipulating you and you dont even know",
-    "How narcissists use love bombing to trap you in toxic relationships",
-    "The intermittent reinforcement trap and why you cant leave toxic people",
-    "How to spot a master manipulator before they destroy your life",
-    "Why toxic people always play the victim and how to stop falling for it",
-    "The gaslighting technique narcissists use to make you question reality",
-    "How manipulators use future faking to keep you hooked forever",
-    "The dark psychology behind breadcrumbing and why it works so well",
-    "How to recognize when someone is triangulating you in a relationship",
-    "The DARVO technique manipulators use when you confront them",
-    "Why narcissists always come back and what they really want from you",
-    "How trauma bonding keeps you stuck with the wrong person",
-    "The silent treatment is not just ignoring it is psychological warfare",
-    "How manipulators use guilt tripping to control your every decision",
-    "Why some people make you feel crazy and how to protect yourself",
-
-    # === ATTRACTION AND RELATIONSHIPS (31-50) ===
-    "Why chasing someone always pushes them away and what to do instead",
-    "The scarcity effect and how to make anyone obsessed with you",
-    "How to make your ex regret leaving you using reverse psychology",
-    "The psychological trick that makes someone think about you nonstop",
-    "Why being slightly unavailable makes you 10 times more attractive",
-    "The eye contact technique that creates instant emotional connection",
-    "How to make someone addicted to you using intermittent reinforcement",
-    "The dark psychology reason why bad boys and bad girls are so attractive",
-    "How to make someone chase you by walking away at the right time",
-    "The Zeigarnik effect and why leaving things unfinished creates obsession",
-    "How to create mystery around yourself that makes people desperate to know you",
-    "The psychological trick to make anyone miss you deeply",
-    "Why giving too much attention kills attraction and what to do instead",
-    "How to be the person everyone wants but nobody can have",
-    "The fear of loss technique that makes someone value you overnight",
-    "How to make someone fall in love with you using the mere exposure effect",
-    "The psychological secret behind why we always want what we cant have",
-    "How to make your words stick in someones mind for days",
-    "Why the person who cares less in a relationship has all the power",
-    "The dark truth about why people lose interest after getting you",
-
-    # === SELF PROTECTION AND BOUNDARIES (51-65) ===
-    "How to stop caring about what others think using the spotlight effect",
-    "Why setting boundaries makes people respect you more not less",
-    "The grey rock method that destroys a narcissists power over you",
-    "How to emotionally detach from someone who is toxic for you",
-    "Why people pleasers are the easiest targets for manipulation",
-    "How to say no without feeling guilty using dark psychology",
-    "The psychological trick to stop overthinking and silence your mind",
-    "How to walk away from someone you love when they are toxic",
-    "Why your need for validation is destroying your mental health",
-    "How to build an unshakeable mindset that nobody can break",
-    "The stoic secret to never letting anyone control your emotions",
-    "How to stop attracting toxic people into your life permanently",
-    "Why loneliness is more powerful than being with the wrong people",
-    "How to heal from emotional manipulation and trust people again",
-    "The dark truth about why you keep going back to people who hurt you",
-
-    # === BODY LANGUAGE AND SECRET TECHNIQUES (66-75) ===
-    "3 body language signs that someone is lying to your face right now",
-    "The mirroring technique that makes anyone instantly like you",
-    "How to read microexpressions and know what someone really feels",
-    "The body language trick that makes you look confident even when scared",
-    "How to tell if someone secretly likes you through their body language",
-    "The handshake psychology trick that gives you instant dominance",
-    "How to detect fake friends using one simple body language test",
-    "The voice tonality trick that makes people hang on to your every word",
-    "How your posture is secretly telling people you are weak and how to fix it",
-    "The cold reading technique mentalists use to read strangers instantly",
-
-    # === EMOTIONAL INTELLIGENCE (76-85) ===
-    "How to stay calm when someone is trying to provoke you",
-    "The 3 second rule that prevents you from saying something you regret",
-    "How emotionally intelligent people handle disrespect differently",
-    "Why reacting emotionally always gives the other person power over you",
-    "The dark psychology trick to make someone feel guilty without saying anything",
-    "How to control your anger and turn it into your most powerful weapon",
-    "Why the smartest people never argue and what they do instead",
-    "How to manipulate your own brain into being disciplined and focused",
-    "The psychological trick to instantly change your mood when feeling down",
-    "How to become emotionally unbreakable using stoic psychology",
-
-    # === CONFIDENCE AND SELF WORTH (86-95) ===
-    "Why trying to be perfect actually makes people like you less",
-    "The Pratfall Effect and how showing weakness makes you more attractive",
-    "How to build dark confidence that intimidates without saying a word",
-    "Why the most confident people never seek approval from anyone",
-    "The psychological trick to eliminate self doubt permanently",
-    "How to develop a presence so strong people feel it when you walk in",
-    "Why comparing yourself to others is destroying your potential",
-    "The mindset shift that separates powerful people from weak people",
-    "How to become the person everyone secretly wants to be",
-    "The dark psychology of self respect and why it changes everything",
-
-    # === MIND GAMES AND REVERSE PSYCHOLOGY (96-100) ===
-    "How reverse psychology makes people do exactly what you want",
-    "The door in the face technique that makes people say yes to anything",
-    "How to plant an idea in someones mind without them knowing",
-    "The anchoring trick that makes people accept any deal you offer",
-    "How to win any negotiation using dark psychology principles",
+    "The psychological trick to make people desperate for your attention",
+    "How to make someone regret disrespecting you without saying a word",
+    "The exact dark psychology tactic used by the top 1 percent",
+    "Why your empathy is being weaponized against you",
+    "The Machiavellian secret to dominating any social situation"
 ]
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -246,8 +147,8 @@ def generate_fresh_topic(used_topics: list) -> str | None:
 # ─────────────────────────────────────────────────────────────────────────────
 MASTER_SYSTEM_PROMPT = f"""
 You are the elite script writer for "{CHANNEL_NAME}" ({HANDLE}).
-You write viral short-form video scripts about dark psychology, manipulation awareness, relationships, and personal growth.
-Your scripts are in English, 1 minute 20 seconds to 1 minute 50 seconds long when read aloud (200-280 words).
+You write viral short-form video scripts about dark psychology, elite mindset, power dynamics, and personal growth.
+Your scripts are in English, strictly under 50 seconds when read aloud (110-140 words).
 
 === YOUR IDENTITY ===
 You are a mysterious, authoritative mentor revealing hidden psychological secrets.
@@ -297,14 +198,13 @@ The viewer should feel like they now hold secret power.
 Make them feel empowered and smarter than before.
 
 PART 5 - CTA WITH URGENCY (5-8 seconds):
-End with urgency and scarcity based call to action for {CHANNEL_NAME}.
+End with an engagement hack call to action. Tell them to comment a word for a highly valuable asset.
 Rotate between these styles:
-- "We might never meet again so subscribe to {CHANNEL_NAME} right now."
-- "Before this video disappears subscribe and stay connected with {CHANNEL_NAME}."
-- "Subscribe to {CHANNEL_NAME} and learn what 99 percent of people will never know."
-- "If this opened your eyes subscribe to {CHANNEL_NAME} for more dark psychology secrets."
-- "This might be the last time you see this. Subscribe to {CHANNEL_NAME} now."
-Never use plain "subscribe". Always wrap in urgency or scarcity.
+- "Comment the word 'CODE' and I will send you the elite blueprint."
+- "Comment 'ELITE' to get access to the hidden guide before it is deleted."
+- "Comment the word 'POWER' and I will DM you the exact psychological blueprint."
+- "Comment 'BLUEPRINT' if you are ready to stop being manipulated."
+Never use plain "subscribe". Always use an engagement hack instructing them to comment a single word.
 
 === CRITICAL: HUMAN CONVERSATIONAL FLOW ===
 
@@ -376,7 +276,7 @@ Make the viewer think "I never knew that" or "I never thought about it that way.
 The script should feel like insider knowledge that is not freely available everywhere.
 
 === STRICT OUTPUT RULES ===
-- Script must be 1 minute 20 seconds to 1 minute 50 seconds when read aloud (200-280 words)
+- Script must be strictly under 50 seconds when read aloud (110-140 words)
 - Always include exactly ONE psychology concept or term per script
 - Never sound like a textbook or lecture
 - Never use emojis hashtags or special formatting inside the script text
@@ -421,7 +321,7 @@ Number 3... the body never agrees with a lie. They will say no I did not do it..
 
 Once you master these three signs... no lie will ever slip past you again. You will read people like an open book.
 
-Subscribe to Ashley MindShift right now... we might never meet again."
+Comment the word CODE and I will send you the elite blueprint."
 
 Study this example. Notice:
 - Conversational tone throughout
@@ -430,7 +330,7 @@ Study this example. Notice:
 - Accurate psychology concept (micro expressions for lying)
 - Relatable scenarios
 - Empowerment at the end
-- Urgency CTA
+- Engagement hack CTA (Comment CODE)
 Every script you generate must match this quality level.
 
 === PINNED COMMENT GENERATION ===
@@ -519,7 +419,7 @@ TOPIC: "{topic}"
 
 CRITICAL REQUIREMENTS:
 1. Follow the exact 5-part structure from your system instructions
-2. Script must be 200-280 words (1 min 20 sec to 1 min 50 sec read time)
+2. Script must be 110-140 words (strictly under 50 seconds read time)
 3. Include one specific psychology concept that ACCURATELY relates to the topic
 4. Make it sound like forbidden hidden knowledge being whispered at midnight
 5. End with urgency-based subscribe CTA for {CHANNEL_NAME}

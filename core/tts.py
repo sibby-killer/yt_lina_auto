@@ -11,13 +11,13 @@ async def _generate_audio(text: str, output_path: str, srt_path: str):
     Internal async function for Ashley MindShift.
     Slower, more dramatic pacing to increase tension and dopamine.
     """
-    # Rate: -5% to slow it down and make it more deliberate
+    # Rate: +20% to speed it up and make it aggressive and viral
     # Pitch: -10Hz for a deeper, darker tone
-    # Volume: +5% to make it feel closer and more personal (human)
+    # Volume: +10% to make it feel closer and more personal (human)
     communicate = edge_tts.Communicate(
         text, 
         VOICE, 
-        rate="-5%", 
+        rate="+20%", 
         pitch="-10Hz", 
         volume="+10%",
         boundary="WordBoundary"

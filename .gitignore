@@ -21,3 +21,5 @@ client_secret*.json
 # OS generated files
 .DS_Store
 Thumbs.db
+
+remotion-render/node_modules/

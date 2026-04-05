@@ -437,3 +437,98 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
         except Exception as ce:
             print(f"Cleanup warning: {ce}")
         gc.collect()
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  REMOTION RENDER FUNCTION
+# ─────────────────────────────────────────────────────────────────────────────
+import json
+
+def parse_srt(srt_file_path):
+    subs = []
+    try:
+        with open(srt_file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        blocks = content.strip().split('\n\n')
+        for block in blocks:
+            lines = block.split('\n')
+            if len(lines) >= 3:
+                time_str = lines[1]
+                text = " ".join(lines[2:])
+                times = time_str.split(' --> ')
+                if len(times) == 2:
+                    def to_sec(t):
+                        t = t.replace(',', '.')
+                        h, m, s = t.split(':')
+                        return float(h) * 3600 + float(m) * 60 + float(s)
+                    try:
+                        subs.append({
+                            "start": to_sec(times[0]),
+                            "end": to_sec(times[1]),
+                            "text": text
+                        })
+                    except:
+                        pass
+    except Exception as e:
+        print(f"[REMOTION] Parse SRT Error: {e}")
+    return subs
+
+def stitch_video_remotion(audio_path: str, broll_paths: list, title: str, output_filename: str = "final_short.mp4", srt_path: str = None):
+    print(f"[REMOTION] Starting Remotion render for: {output_filename}")
+    
+    srt_data = []
+    if srt_path and os.path.exists(srt_path):
+        srt_data = parse_srt(srt_path)
+    
+    # Calculate frames based on audio duration
+    try:
+        audio_clip = AudioFileClip(audio_path)
+        duration = audio_clip.duration
+        audio_clip.close()
+    except Exception:
+        duration = 60 # Default fallback
+    frames = int((duration + 1) * 30) # 30fps with 1 sec buffer
+    
+    remotion_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "remotion-render")
+    props_path = os.path.join(remotion_dir, "props.json")
+    
+    audio_url = f"file:///{os.path.abspath(audio_path).replace(os.sep, '/')}"
+    
+    # Pass first valid broll for background mixing if available
+    bg_video_url = ""
+    valid_brolls = [p for p in broll_paths if validate_clip(p)]
+    if valid_brolls:
+        bg_video_url = f"file:///{os.path.abspath(valid_brolls[0]).replace(os.sep, '/')}"
+    
+    props = {
+        "audioUrl": audio_url,
+        "srtData": srt_data,
+        "title": title,
+        "bgVideoUrl": bg_video_url
+    }
+    
+    with open(props_path, "w", encoding="utf-8") as f:
+        json.dump(props, f)
+        
+    out_path = os.path.join(OUTPUT_DIR, output_filename)
+    out_abs = os.path.abspath(out_path).replace(os.sep, '/')
+    
+    # Run npx remotion render
+    # It defaults to src/index.ts -> CaptionShort composition
+    cmd = [
+        "npx", "remotion", "render", 
+        "src/index.ts", "CaptionShort",
+        out_abs,
+        "--props", "props.json",
+        "--frames", f"0-{frames}"
+    ]
+    
+    try:
+        subprocess.run(cmd, cwd=remotion_dir, shell=True, check=True)
+        if os.path.exists(out_abs):
+            print(f"[REMOTION] Successfully generated: {out_abs}")
+            return out_abs
+    except subprocess.CalledProcessError as e:
+        print(f"[REMOTION] ERROR during rendering: {e}")
+        
+    return None
+

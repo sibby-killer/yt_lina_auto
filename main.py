@@ -8,7 +8,7 @@ load_dotenv()
 from core.ai_script import generate_video_content, CHANNEL_NAME
 from core.tts import generate_voiceover
 from core.yt_scraper import download_viral_b_roll
-from core.video_editor import stitch_video
+from core.video_editor import stitch_video, stitch_video_remotion
 from core.supabase_db import log_video, update_video_upload, cleanup_old_logs
 from config import VID_BG_DIR
 import random
@@ -69,11 +69,12 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
             bg_music_path = os.path.join(VID_BG_DIR, random.choice(music_files))
             log(f"Selected Professional BG Music: {os.path.basename(bg_music_path)}")
 
-    final_video_path = stitch_video(
-        audio_path, broll_paths,
+    final_video_path = stitch_video_remotion(
+        audio_path=audio_path, 
+        broll_paths=broll_paths,
+        title=content.get('title', 'Daily Insights'),
         output_filename=output_filename,
-        srt_path=srt_path,
-        bg_music_path=bg_music_path
+        srt_path=srt_path
     )
 
     if not final_video_path:

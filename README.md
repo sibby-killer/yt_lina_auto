@@ -15,7 +15,7 @@ A two-pipeline content engine that runs entirely on GitHub Actions:
 | **Long-Form** | `long_main.py` | 8–10 min YouTube videos | 1× daily |
 
 Both pipelines are fully automated:  
-`AI Script → Voiceover → B-Roll → Video Assembly → Upload → Pin Comment → Log`
+`AI Script → Voiceover → B-Roll → Remotion Assembly → Upload → Pin Comment → Log`
 
 ---
 
@@ -87,12 +87,20 @@ AutoVidEmpire_V2/
 │   ├── tts.py                 # Edge-TTS voiceover (ChristopherNeural)
 │   ├── yt_scraper.py          # TikTok B-roll downloader (short-form)
 │   ├── pexels_scraper.py      # Pexels B-roll downloader (long-form)
-│   ├── video_editor.py        # FFmpeg video assembly
+│   ├── video_editor.py        # Remotion video assembly prep
 │   ├── youtube_uploader.py    # YouTube Data API v3 uploader
 │   ├── facebook_uploader.py   # Facebook Graph API uploader
 │   ├── tiktok_uploader.py     # TikTok uploader
 │   ├── supabase_db.py         # Supabase logging client
 │   └── SCRIPT_GUIDE.md        # Script writing reference guide
+│
+├── remotion-render/           # React/Remotion Engine for 1-Word Captions
+│   ├── src/
+│   │   ├── index.ts           # Root registration
+│   │   ├── Video.tsx          # Main composition setup
+│   │   └── CaptionShort.tsx   # 1-word sync & motion graphics layering
+│   ├── package.json           
+│   └── remotion.config.ts     
 │
 └── .github/
     └── workflows/             # GitHub Actions automation

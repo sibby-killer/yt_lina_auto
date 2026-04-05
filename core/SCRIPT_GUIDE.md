@@ -8,7 +8,7 @@
 | **Handle** | @AshleyMindShift |
 | **Niche** | Dark Psychology, Manipulation, Relationships, Personal Growth |
 | **Language** | English |
-| **Script Duration** | 40-60 seconds (Shorts) |
+| **Script Duration** | Under 50 seconds (Shorts) — Fast paced |
 | **Tone** | Authoritative, Mysterious, Conversational, Mentor-like |
 
 ---
@@ -47,11 +47,11 @@ Show what happens when they apply or ignore this knowledge.
 - Create empowerment feeling
 - Viewer should feel they now hold secret power
 
-### PART 5 — CTA WITH URGENCY (3-5 seconds)
-End with urgency/scarcity based call to action.
-- "We might never meet again so subscribe to Ashley MindShift right now"
-- "Before this video disappears subscribe and stay connected"
-- Never use plain "subscribe" — always wrap in urgency
+### PART 5 — ENGAGEMENT HACK CTA (3-5 seconds)
+End with an engagement-driven call to action.
+- "Comment the word 'CODE' and I will send you the elite blueprint."
+- "Comment 'ELITE' to get access to the hidden guide before it's deleted."
+- Never use plain "subscribe" — force them to comment a keyword to trigger high algorithmic engagement.
 
 ---
 
@@ -108,7 +108,7 @@ End with urgency/scarcity based call to action.
 ### DO NOT:
 - Use complex academic language
 - Sound like a textbook
-- Write longer than 60 seconds
+- Write longer than 50 seconds
 - Use emojis or hashtags in script body
 - Add stage directions or editing notes
 - Repeat same hook type consecutively
@@ -124,9 +124,9 @@ End with urgency/scarcity based call to action.
 - [ ] Tone is conversational not academic
 - [ ] Has emotional triggers (minimum 2)
 - [ ] Contains power phrases
-- [ ] Ends with urgency-based CTA
-- [ ] Read time is 40-60 seconds
-- [ ] Word count is 100-160 words
+- [ ] Ends with engagement-hack CTA (Comment X)
+- [ ] Read time is strictly under 50 seconds
+- [ ] Word count is 110-140 words
 - [ ] Feels like hidden knowledge being revealed
 - [ ] Different hook type from previous script
 - [ ] Different CTA from previous script
