@@ -159,9 +159,14 @@ Your tone is confident, conversational, slightly dark, and empowering.
 
 PART 1 - HOOK (3 seconds):
 Short, punchy, aggressive hook. Max 1-2 short sentences.
+STRICT NEGATIVE CONSTRAINT: Never start with "Imagine this", "Close your eyes", "What if I told you", or generic hypothetical storytelling/story-time tropes.
+- "Stop being the victim in your own life..."
+- "You are being lied to... and here's how to see it..."
 - "If you want to absolutely dominate any room..."
 - "Here is a toxic trick to make someone obsessed..."
+- "The 1 percent use this specific mental model to control you..."
 - "How to instantly read anyone's true intentions..."
+- "Your kindness is being used as a weapon against you..."
 
 PART 2 & 3 - THE CORE MANIPULATION (25 seconds):
 This is the CORE of the script. Explain the concept fast and hard.
@@ -193,6 +198,7 @@ REFERENCE 3:
 1. MAXIMUM 85 WORDS. We need this under 50 seconds.
 2. Direct YOU addressing throughout.
 3. No academic textbook filler. Get straight to the manipulation/power-move.
+4. FORBIDDEN STARTING PHRASES: "Imagine this", "In this video", "Welcome back", "Are you ready", "Close your eyes". Start with immediate VALUE or DANGER.
 
 === ACCURACY RULE ===
 The psychology concept you mention MUST be genuinely and accurately connected to the topic.

@@ -62,10 +62,20 @@ export const CaptionShort: React.FC<{
             justifyContent: 'center', 
             alignItems: 'center' 
         }}>
-            {/* Scraped B-roll as base layer with low opacity and very low volume */}
+            {/* Scraped B-roll as base layer with low opacity and cinematic filter */}
             {bgVideoUrl && (
                <AbsoluteFill>
-                   <Video src={staticFile(bgVideoUrl)} volume={0.05} style={{ objectFit: 'cover', opacity: 0.4, width: '100%', height: '100%' }} />
+                   <Video 
+                    src={staticFile(bgVideoUrl)} 
+                    volume={0.05} 
+                    style={{ 
+                        objectFit: 'cover', 
+                        opacity: 0.35, 
+                        width: '100%', 
+                        height: '100%',
+                        filter: 'grayscale(0.8) contrast(1.2) brightness(0.8)' 
+                    }} 
+                   />
                </AbsoluteFill>
             )}
 
@@ -77,19 +87,48 @@ export const CaptionShort: React.FC<{
             {/* Audio Track */}
             {audioUrl && <Audio src={staticFile(audioUrl)} />}
 
-            {/* 2-Word Dynamic Captions with Typography and Motion */}
+            {/* TOP HOOK TITLE - Persistent 1-3 words header */}
+            {title && (
+                <div style={{
+                    position: 'absolute',
+                    top: '120px',
+                    width: '100%',
+                    textAlign: 'center',
+                    fontFamily: "'Inter', 'Montserrat', sans-serif",
+                    fontWeight: 900,
+                    fontSize: 70,
+                    color: '#ffffff',
+                    textTransform: 'uppercase',
+                    letterSpacing: '4px',
+                    zIndex: 20,
+                    textShadow: '0px 0px 20px rgba(0,0,0,0.8)'
+                }}>
+                    <span style={{
+                        background: 'rgba(255, 42, 42, 0.85)',
+                        padding: '10px 40px',
+                        borderRadius: '4px',
+                        boxShadow: '0px 10px 30px rgba(0,0,0,0.5)'
+                    }}>
+                        {title}
+                    </span>
+                </div>
+            )}
+
+            {/* 2-Word Dynamic Captions - Positioned in the bottom-third */}
             {currentChunkInfo && (
                 <div style={{
+                    position: 'absolute',
+                    bottom: '25%',
                     display: 'flex',
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    maxWidth: '85%',
+                    maxWidth: '90%',
                     gap: '20px',
                     fontFamily: "'Inter', 'Montserrat', sans-serif",
                     fontWeight: 900,
-                    fontSize: 85,
+                    fontSize: 100, // Slightly larger for impact
                     lineHeight: 1.1,
                     textTransform: 'uppercase',
                     textAlign: 'center',
