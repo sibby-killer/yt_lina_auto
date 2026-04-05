@@ -31,15 +31,8 @@ export const CaptionShort: React.FC<{
         extrapolateRight: 'clamp',
     });
 
-    const scale = spring({
-        fps,
-        frame: frame % 15, // Pulse effect
-        config: { damping: 200 },
-        durationInFrames: 5,
-    });
-    
-    // Zoom effect slightly based on words
-    const zoomText = currentWord ? 1 + (scale * 0.05) : 1;
+    // Remove fast pulsating scale to avoid text flickering
+    const zoomText = 1;
 
     return (
         <AbsoluteFill style={{ 
@@ -47,10 +40,10 @@ export const CaptionShort: React.FC<{
             justifyContent: 'center', 
             alignItems: 'center' 
         }}>
-            {/* Scraped B-roll as base layer with low opacity */}
+            {/* Scraped B-roll as base layer with low opacity and very low volume */}
             {bgVideoUrl && (
                <AbsoluteFill>
-                   <Video src={staticFile(bgVideoUrl)} style={{ objectFit: 'cover', opacity: 0.3, width: '100%', height: '100%' }} />
+                   <Video src={staticFile(bgVideoUrl)} volume={0.05} style={{ objectFit: 'cover', opacity: 0.3, width: '100%', height: '100%' }} />
                </AbsoluteFill>
             )}
 

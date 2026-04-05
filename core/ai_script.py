@@ -21,7 +21,7 @@ FALLBACK_MODEL = "llama-3.1-70b-versatile"
 CHANNEL_NAME   = "Ashley MindShift"
 CHANNEL_SLOGAN = "The shadows of the mind revealed."
 HANDLE         = "@AshleyMindShift"
-SUBSCRIBE_LINE = f"Master your mind. Subscribe to {CHANNEL_NAME} {HANDLE}"
+SUBSCRIBE_LINE = f"Control your mind before they control you. Join {CHANNEL_NAME} {HANDLE}"
 
 BASE_HASHTAGS = (
     "#DarkPsychology #Manipulation #MindGames #Psychology #HumanBehavior "
@@ -198,13 +198,13 @@ The viewer should feel like they now hold secret power.
 Make them feel empowered and smarter than before.
 
 PART 5 - CTA WITH URGENCY (5-8 seconds):
-End with an engagement hack call to action. Tell them to comment a word for a highly valuable asset.
+End with an engagement hack call to action. Tell them to comment a word for a highly valuable asset, or use a manipulative mindset CTA.
 Rotate between these styles:
 - "Comment the word 'CODE' and I will send you the elite blueprint."
 - "Comment 'ELITE' to get access to the hidden guide before it is deleted."
-- "Comment the word 'POWER' and I will DM you the exact psychological blueprint."
-- "Comment 'BLUEPRINT' if you are ready to stop being manipulated."
-Never use plain "subscribe". Always use an engagement hack instructing them to comment a single word.
+- "Save this video before they force me to take it down."
+- "Share this with someone who is currently being manipulated."
+Never use plain "subscribe" or "follow". Always use an engagement hack or manipulative frame.
 
 === CRITICAL: HUMAN CONVERSATIONAL FLOW ===
 
@@ -371,8 +371,8 @@ Line 2: [What the viewer will learn — naturally include 2-3 SEO keywords]
 [Empty line]
 Line 3: [Engagement question specific to the topic — ask viewers to comment]
 [Empty line]
-🔔 Subscribe to @AshleyMindShift for more dark psychology secrets
-👁️ Turn on notifications so you never miss a revelation
+🚨 They don't want you to know this. 
+👁️ Follow to master the game they are playing on you.
 [Empty line]
 {{CREDITS_PLACEHOLDER}}
 [Empty line]
@@ -398,7 +398,7 @@ CRITICAL FORMATTING RULE: The description MUST use actual newline characters (\n
 Every section must start on a new line. Never put everything on one line separated by commas or periods.
 Use proper paragraph spacing with empty lines between sections.
 Example correct format (using \n):
-"Hook sentence about the topic 🧠\nWhat the viewer will learn with SEO keywords\n\nEngagement question for viewers? 👇\n\n🔔 Subscribe to @AshleyMindShift for more dark psychology secrets\n👁️ Turn on notifications so you never miss a revelation\n\n{{CREDITS_PLACEHOLDER}}\n\n#DarkPsychology #Hashtag2 #Hashtag3"
+"Hook sentence about the topic 🧠\nWhat the viewer will learn with SEO keywords\n\nEngagement question for viewers? 👇\n\n🚨 They don't want you to know this. \n👁️ Follow to master the game they are playing on you.\n\n{{CREDITS_PLACEHOLDER}}\n\n#DarkPsychology #Hashtag2 #Hashtag3"
 """
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -637,8 +637,8 @@ LONG DESCRIPTION FORMAT:
 💬 JOIN THE CONVERSATION:
 [Engagement question specific to the video — different from the pinned comment]
 
-🔔 Subscribe to @AshleyMindShift for weekly dark psychology deep-dives
-👁️ Turn on notifications so you never miss a revelation
+🚨 Only the top 1% know these secrets. 
+👁️ Follow to master the game they are playing on you before it's too late.
 
 {{CREDITS_PLACEHOLDER}}
 
