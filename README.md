@@ -132,9 +132,19 @@ Add these as **GitHub Secrets** or in your local `.env` file:
 
 ### Local Setup
 ```bash
+# 1. Install Python dependencies
 pip install -r requirements.txt
+
+# 2. Install Remotion Engine dependencies (Node 18+ required)
+cd remotion-render
+npm install
+cd ..
+
+# 3. Environment Variables
 cp .env.example .env   # Fill in your API keys
 python refresh_token.py  # Authenticate YouTube once
+
+# 4. Test Runs
 python main.py           # Test a short-form run
 python long_main.py      # Test a long-form run
 ```
