@@ -23,3 +23,6 @@ client_secret*.json
 Thumbs.db
 
 remotion-render/node_modules/
+remotion-render/out/
+test_render.py
+temp.txt
