@@ -488,17 +488,38 @@ def stitch_video_remotion(audio_path: str, broll_paths: list, title: str, output
         duration = 60 # Default fallback
     frames = int((duration + 1) * 30) # 30fps with 1 sec buffer
     
+    import shutil
+    
     remotion_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "remotion-render")
     props_path = os.path.join(remotion_dir, "props.json")
+    public_dir = os.path.join(remotion_dir, "public")
     
-    audio_url = f"file:///{os.path.abspath(audio_path).replace(os.sep, '/')}"
+    os.makedirs(public_dir, exist_ok=True)
     
-    # Pass first valid broll for background mixing if available
+    # 1. Copy audio to public folder
+    dest_audio = os.path.join(public_dir, "current_audio.mp3")
+    try:
+        if os.path.exists(dest_audio):
+            os.remove(dest_audio)
+        shutil.copy(audio_path, dest_audio)
+    except Exception as e:
+        print(f"[REMOTION] Failed to copy audio to public: {e}")
+        
+    audio_url = "/current_audio.mp3"
+    
+    # 2. Copy background video to public folder (first valid broll)
     bg_video_url = ""
     valid_brolls = [p for p in broll_paths if validate_clip(p)]
     if valid_brolls:
-        bg_video_url = f"file:///{os.path.abspath(valid_brolls[0]).replace(os.sep, '/')}"
-    
+        dest_video = os.path.join(public_dir, "current_broll.mp4")
+        try:
+            if os.path.exists(dest_video):
+                os.remove(dest_video)
+            shutil.copy(valid_brolls[0], dest_video)
+            bg_video_url = "/current_broll.mp4"
+        except Exception as e:
+            print(f"[REMOTION] Failed to copy broll to public: {e}")
+            
     props = {
         "audioUrl": audio_url,
         "srtData": srt_data,
