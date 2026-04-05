@@ -2,18 +2,56 @@ import os
 import json
 import random
 from groq import Groq
-from config import GROQ_API_KEY
+from config import GROQ_API_KEY, OPENROUTER_API_KEY
 
 if GROQ_API_KEY:
     client = Groq(api_key=GROQ_API_KEY)
 else:
     client = None
 
+# OpenRouter client (OpenAI compatible)
+# We use simple requests or the openai package if available.
+# Since we only have standard tools, we'll use a helper to talk to OpenRouter.
+import requests
+
+def openrouter_chat(messages: list, model: str, temperature: float = 0.85):
+    if not OPENROUTER_API_KEY:
+        return None
+    try:
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                "HTTP-Referer": "https://github.com/sibby-killer/yt_lina_auto",
+                "X-Title": "AshleyMindShift Automation",
+            },
+            data=json.dumps({
+                "model": model,
+                "messages": messages,
+                "temperature": temperature,
+                "response_format": {"type": "json_object"}
+            })
+        )
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"[OpenRouter] Error {response.status_code}: {response.text}")
+            return None
+    except Exception as e:
+        print(f"[OpenRouter] Connection error: {e}")
+        return None
+
 # ─────────────────────────────────────────────────────────────────────────────
-#  MODELS — Primary + Fallback
+#  MODELS — Priority Pipeline
 # ─────────────────────────────────────────────────────────────────────────────
-PRIMARY_MODEL  = "llama-3.3-70b-versatile"
-FALLBACK_MODEL = "llama-3.1-70b-versatile"
+# The TOP 3 Free Models from OpenRouter (nuanced, human, intelligent)
+MODELS_PIPELINE = [
+    { "provider": "openrouter", "id": "nousresearch/hermes-3-llama-3.1-405b:free" },  # 405B Frontier
+    { "provider": "openrouter", "id": "meta-llama/llama-3.3-70b-instruct:free" },     # SOTA 70B
+    { "provider": "openrouter", "id": "qwen/qwen3.6-plus:free" },                    # Advanced Qwen
+    { "provider": "groq",       "id": "llama-3.3-70b-versatile" },                   # Groq Fallback
+    { "provider": "groq",       "id": "llama-3.1-8b-instant" },                      # Emergency Fallback
+]
 
 # ─────────────────────────────────────────────────────────────────────────────
 #  CHANNEL BRAND IDENTITY
@@ -125,21 +163,32 @@ def generate_fresh_topic(used_topics: list) -> str | None:
         }
     ]
 
-    for model in [PRIMARY_MODEL, FALLBACK_MODEL]:
-        try:
-            response = client.chat.completions.create(
-                messages=messages,
-                model=model,
-                temperature=1.0,
-                max_tokens=200,
-                response_format={"type": "json_object"}
-            )
-            result = json.loads(response.choices[0].message.content)
-            return result.get("topic", None)
-        except Exception as e:
-            print(f"[Groq] Fresh topic error on {model}: {e}. Trying next...")
+    for entry in MODELS_PIPELINE:
+        provider = entry["provider"]
+        model_id = entry["id"]
 
-    print("[Groq] Both models failed for fresh topic generation.")
+        try:
+            if provider == "openrouter":
+                response = openrouter_chat(messages, model=model_id, temperature=1.0)
+                if response:
+                    result = json.loads(response["choices"][0]["message"]["content"])
+                    return result.get("topic", None)
+            
+            elif provider == "groq" and client:
+                response = client.chat.completions.create(
+                    messages=messages,
+                    model=model_id,
+                    temperature=1.0,
+                    max_tokens=200,
+                    response_format={"type": "json_object"}
+                )
+                result = json.loads(response.choices[0].message.content)
+                return result.get("topic", None)
+
+        except Exception as e:
+            print(f"[{provider}] Fresh topic error on {model_id}: {e}. Trying next...")
+
+    print("[CRITICAL] All providers failed for fresh topic generation.")
     return None
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -398,33 +447,57 @@ Return ONLY valid JSON:
 }}
 """
 
-    for model in [PRIMARY_MODEL, FALLBACK_MODEL]:
+    for entry in MODELS_PIPELINE:
+        provider = entry["provider"]
+        model_id = entry["id"]
+        
         try:
-            response = client.chat.completions.create(
-                messages=[
-                    {"role": "system", "content": MASTER_SYSTEM_PROMPT},
-                    {"role": "user", "content": user_prompt}
-                ],
-                model=model,
-                temperature=0.85,
-                max_tokens=3000,
-                top_p=0.90,
-                response_format={"type": "json_object"}
-            )
-            content_str = response.choices[0].message.content
-            result = json.loads(content_str)
+            if provider == "openrouter":
+                print(f"[INFO] Attempting generation with {model_id} (OpenRouter)...")
+                response = openrouter_chat(
+                    messages=[
+                        {"role": "system", "content": MASTER_SYSTEM_PROMPT},
+                        {"role": "user", "content": user_prompt}
+                    ],
+                    model=model_id,
+                    temperature=0.85
+                )
+                if response:
+                    content_str = response["choices"][0]["message"]["content"]
+                    result = json.loads(content_str)
+                    
+                    # Add metadata
+                    result["channel"] = CHANNEL_NAME
+                    result["hashtags"] = BASE_HASHTAGS
+                    result["subscribe_line"] = SUBSCRIBE_LINE
+                    return result
+            
+            elif provider == "groq" and client:
+                print(f"[INFO] Attempting generation with {model_id} (Groq)...")
+                response = client.chat.completions.create(
+                    messages=[
+                        {"role": "system", "content": MASTER_SYSTEM_PROMPT},
+                        {"role": "user", "content": user_prompt}
+                    ],
+                    model=model_id,
+                    temperature=0.85,
+                    max_tokens=3000,
+                    top_p=0.90,
+                    response_format={"type": "json_object"}
+                )
+                content_str = response.choices[0].message.content
+                result = json.loads(content_str)
 
-            # Add metadata
-            result["channel"] = CHANNEL_NAME
-            result["hashtags"] = BASE_HASHTAGS
-            result["subscribe_line"] = SUBSCRIBE_LINE
-
-            return result
+                # Add metadata
+                result["channel"] = CHANNEL_NAME
+                result["hashtags"] = BASE_HASHTAGS
+                result["subscribe_line"] = SUBSCRIBE_LINE
+                return result
 
         except Exception as e:
-            print(f"[Groq] Short-form error on {model}: {e}. Trying next...")
+            print(f"[{provider}] Error on {model_id}: {e}. Trying next...")
 
-    print("[Groq] Both models failed for short-form generation.")
+    print("[CRITICAL] All providers and models failed for short-form generation.")
     return None
 
 
@@ -663,65 +736,47 @@ Return ONLY valid JSON:
 REMEMBER: The script MUST be 1500-2000 words. Count your words. If it is under 1500 words, regenerate it longer.
 """
 
-    for model in [PRIMARY_MODEL, FALLBACK_MODEL]:
+    for entry in MODELS_PIPELINE:
+        provider = entry["provider"]
+        model_id = entry["id"]
+
         try:
-            response = client.chat.completions.create(
-                messages=[
-                    {"role": "system", "content": long_system},
-                    {"role": "user", "content": user_prompt}
-                ],
-                model=model,
-                temperature=0.8,
-                max_tokens=10000,
-                top_p=0.9,
-                response_format={"type": "json_object"}
-            )
-            content_str = response.choices[0].message.content
-            result = json.loads(content_str)
-
-            # ── Word count validation ──────────────────────────────────────
-            script_text = result.get("script", "")
-            word_count = len(script_text.split())
-            print(f"[INFO] Long-form script word count: {word_count}")
-
-            if word_count < 1200:
-                print(f"[WARNING] Script too short ({word_count} words). Attempting regeneration...")
-                retry_prompt = (
-                    f"The previous script was only {word_count} words which is too short. "
-                    f"I need MINIMUM 1500 words for an 8-10 minute video. "
-                    f"Please regenerate the script about '{topic}' with AT LEAST 1500 words. "
-                    f"Make it much longer and more detailed. Expand every section significantly. "
-                    f"This is critical."
-                )
-                retry_response = client.chat.completions.create(
+            if provider == "openrouter":
+                print(f"[INFO] Attempting Long-Form generation with {model_id} (OpenRouter)...")
+                response = openrouter_chat(
                     messages=[
                         {"role": "system", "content": long_system},
-                        {"role": "user", "content": user_prompt},
-                        {"role": "assistant", "content": content_str},
-                        {"role": "user", "content": retry_prompt}
+                        {"role": "user", "content": user_prompt}
                     ],
-                    model=PRIMARY_MODEL,
+                    model=model_id,
+                    temperature=0.8
+                )
+                if response:
+                    content_str = response["choices"][0]["message"]["content"]
+                    result = json.loads(content_str)
+                    return result
+            
+            elif provider == "groq" and client:
+                print(f"[INFO] Attempting Long-Form generation with {model_id} (Groq)...")
+                response = client.chat.completions.create(
+                    messages=[
+                        {"role": "system", "content": long_system},
+                        {"role": "user", "content": user_prompt}
+                    ],
+                    model=model_id,
                     temperature=0.8,
                     max_tokens=10000,
                     top_p=0.9,
                     response_format={"type": "json_object"}
                 )
-                retry_result = json.loads(retry_response.choices[0].message.content)
-                retry_word_count = len(retry_result.get("script", "").split())
-                print(f"[INFO] Retry script word count: {retry_word_count}")
-
-                if retry_word_count > word_count:
-                    result = retry_result
-
-            # ── Add metadata ───────────────────────────────────────────────
-            result["channel"] = CHANNEL_NAME
-            result["hashtags"] = BASE_HASHTAGS
-            return result
+                content_str = response.choices[0].message.content
+                result = json.loads(content_str)
+                return result
 
         except Exception as e:
-            print(f"[Groq] Long-form error on {model}: {e}. Trying next...")
+            print(f"[{provider}] Long-Form error on {model_id}: {e}. Trying next...")
 
-    print("[Groq] Both models failed for long-form generation.")
+    print("[CRITICAL] All providers and models failed for LONG-FORM generation.")
     return None
 
 

@@ -96,7 +96,7 @@ export const CaptionShort: React.FC<{
                     textAlign: 'center',
                     fontFamily: "'Inter', 'Montserrat', sans-serif",
                     fontWeight: 900,
-                    fontSize: 70,
+                    fontSize: 40,
                     color: '#ffffff',
                     textTransform: 'uppercase',
                     letterSpacing: '4px',
@@ -124,11 +124,11 @@ export const CaptionShort: React.FC<{
                     flexWrap: 'wrap',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    maxWidth: '90%',
-                    gap: '20px',
+                    maxWidth: '75%',
+                    gap: '15px',
                     fontFamily: "'Inter', 'Montserrat', sans-serif",
                     fontWeight: 900,
-                    fontSize: 100, // Slightly larger for impact
+                    fontSize: 55, // Reduced from 100 for better fit
                     lineHeight: 1.1,
                     textTransform: 'uppercase',
                     textAlign: 'center',

@@ -397,7 +397,7 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
                 srt_abs = srt_abs.replace(":", "\\:")
 
             style = (
-                "FontName=Arial,FontSize=28,PrimaryColour=&HFFFFFF&,"
+                "FontName=Arial,FontSize=18,PrimaryColour=&HFFFFFF&,"
                 "OutlineColour=&H000000&,Outline=2,Alignment=10,Bold=1"
             )
             cmd = [
