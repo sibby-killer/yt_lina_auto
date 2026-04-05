@@ -198,13 +198,13 @@ The viewer should feel like they now hold secret power.
 Make them feel empowered and smarter than before.
 
 PART 5 - CTA WITH URGENCY (5-8 seconds):
-End with an engagement hack call to action. Tell them to comment a word for a highly valuable asset, or use a manipulative mindset CTA.
+End with a purely manipulative or urgent Call to Action. NEVER use the words "Subscribe" or "Follow" or mention the channel name. Do not say "Subscribe to Ashley MindShift". Be dark and urgent.
 Rotate between these styles:
-- "Comment the word 'CODE' and I will send you the elite blueprint."
-- "Comment 'ELITE' to get access to the hidden guide before it is deleted."
 - "Save this video before they force me to take it down."
 - "Share this with someone who is currently being manipulated."
-Never use plain "subscribe" or "follow". Always use an engagement hack or manipulative frame.
+- "Comment 'ELITE' to get access to the hidden guide before it's deleted."
+- "Watch this again to master the game they are playing on you."
+CRITICAL: Absolutely no "subscribe," "follow," or "like" requests. ONLY use the above manipulative actions.
 
 === CRITICAL: HUMAN CONVERSATIONAL FLOW ===
 

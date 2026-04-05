@@ -16,13 +16,26 @@ export const CaptionShort: React.FC<{
     const { fps, width, height } = useVideoConfig();
     const frame = useCurrentFrame();
 
-    // 1-word text isolation
-    const currentWord = useMemo(() => {
+    // 2-word text chunking with gap bridging
+    const currentChunkInfo = useMemo(() => {
         const currentTime = frame / fps;
-        const currentSub = srtData.find(
-            (sub) => currentTime >= sub.start && currentTime <= sub.end
-        );
-        return currentSub ? currentSub.text : '';
+        
+        for (let i = 0; i < srtData.length; i += 2) {
+            const word1 = srtData[i];
+            const word2 = srtData[i + 1];
+            
+            const start = word1.start;
+            // Bridge the gap up to 0.2 seconds between words
+            const end = word2 ? word2.end : word1.end;
+            
+            if (currentTime >= start - 0.05 && currentTime <= end + 0.1) {
+                return {
+                    words: word2 ? [word1.text, word2.text] : [word1.text],
+                    startFrame: Math.floor(start * fps)
+                };
+            }
+        }
+        return null;
     }, [frame, fps, srtData]);
 
     // Motion graphic background (simple gradient shift)
@@ -31,63 +44,67 @@ export const CaptionShort: React.FC<{
         extrapolateRight: 'clamp',
     });
 
-    // Remove fast pulsating scale to avoid text flickering
-    const zoomText = 1;
+    // Pop animation based on the start frame of the 2-word chunk
+    const popScale = currentChunkInfo ? spring({
+        fps,
+        frame: frame - currentChunkInfo.startFrame,
+        config: { damping: 15, mass: 0.5, stiffness: 200 },
+        durationInFrames: 10,
+    }) : 0;
+    
+    // Slight continuous scale mapping mapping from 1.0 to 1.1 based on lifetime of chunk
+    const zoomText = currentChunkInfo ? 1 + ((frame - currentChunkInfo.startFrame) * 0.005) : 1;
+    const finalScale = currentChunkInfo ? popScale * zoomText : 0;
 
     return (
         <AbsoluteFill style={{ 
-            background: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)', 
+            background: '#0a0a0a', 
             justifyContent: 'center', 
             alignItems: 'center' 
         }}>
             {/* Scraped B-roll as base layer with low opacity and very low volume */}
             {bgVideoUrl && (
                <AbsoluteFill>
-                   <Video src={staticFile(bgVideoUrl)} volume={0.05} style={{ objectFit: 'cover', opacity: 0.3, width: '100%', height: '100%' }} />
+                   <Video src={staticFile(bgVideoUrl)} volume={0.05} style={{ objectFit: 'cover', opacity: 0.4, width: '100%', height: '100%' }} />
                </AbsoluteFill>
             )}
 
-            {/* Animated BG shape mixed with B-roll */}
-            <div style={{
-                position: 'absolute',
-                width: 800,
-                height: 800,
-                borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.05)',
-                filter: 'blur(100px)',
-                transform: `translateY(${yOffset}px)`
+            {/* Simulated Vignette / Shadow Overlay */}
+            <AbsoluteFill style={{
+                background: 'radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 100%)',
             }} />
 
             {/* Audio Track */}
             {audioUrl && <Audio src={staticFile(audioUrl)} />}
 
-            {/* 1 Word Captions */}
-            {currentWord ? (
+            {/* 2-Word Dynamic Captions with Typography and Motion */}
+            {currentChunkInfo && (
                 <div style={{
-                    color: '#fff',
-                    fontFamily: 'sans-serif',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '30px',
+                    fontFamily: "'Inter', 'Montserrat', sans-serif",
                     fontWeight: 900,
-                    fontSize: 140,
+                    fontSize: 150,
                     textTransform: 'uppercase',
                     textAlign: 'center',
-                    textShadow: '0px 10px 30px rgba(0,0,0,0.8)',
-                    transform: `scale(${zoomText})`,
+                    transform: `scale(${finalScale})`,
                     zIndex: 10
                 }}>
-                    {currentWord}
-                </div>
-            ) : (
-                <div style={{
-                    color: 'rgba(255,255,255,0.2)',
-                    fontFamily: 'sans-serif',
-                    fontWeight: 700,
-                    fontSize: 80,
-                    textAlign: 'center',
-                    textTransform: 'uppercase',
-                    width: '80%',
-                    zIndex: 10
-                }}>
-                    {title}
+                    <span style={{ 
+                        color: '#ffffff', 
+                        textShadow: '0px 15px 40px rgba(0,0,0,0.9), 0px 5px 10px rgba(0,0,0,0.8)' 
+                    }}>
+                        {currentChunkInfo.words[0]}
+                    </span>
+                    {currentChunkInfo.words[1] && (
+                        <span style={{ 
+                            color: '#ff2a2a', // High energy red accent
+                            textShadow: '0px 15px 40px rgba(0,0,0,0.9), 0px 5px 10px rgba(0,0,0,0.8)' 
+                        }}>
+                            {currentChunkInfo.words[1]}
+                        </span>
+                    )}
                 </div>
             )}
         </AbsoluteFill>

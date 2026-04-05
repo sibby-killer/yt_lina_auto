@@ -507,18 +507,49 @@ def stitch_video_remotion(audio_path: str, broll_paths: list, title: str, output
         
     audio_url = "current_audio.mp3"
     
-    # 2. Copy background video to public folder (first valid broll)
+    # 2. Process background video by concatenating clips to fill the duration
     bg_video_url = ""
-    valid_brolls = [p for p in broll_paths if validate_clip(p)]
-    if valid_brolls:
-        dest_video = os.path.join(public_dir, "current_broll.mp4")
-        try:
-            if os.path.exists(dest_video):
-                os.remove(dest_video)
-            shutil.copy(valid_brolls[0], dest_video)
-            bg_video_url = "current_broll.mp4"
-        except Exception as e:
-            print(f"[REMOTION] Failed to copy broll to public: {e}")
+    valid_paths = [p for p in broll_paths if validate_clip(p)]
+    if valid_paths:
+        print(f"[REMOTION] Validating and trimming {len(valid_paths)} clips for background...")
+        processed_clips = []
+        current_time = 0
+        target_ratio = 1080 / 1920.0
+        
+        for path in valid_paths:
+            if current_time >= duration:
+                break
+                
+            clip = safe_load_clip(path, (1080, 1920), target_ratio)
+            if not clip:
+                continue
+                
+            remaining = duration - current_time
+            if clip.duration > remaining:
+                clip = clip.subclipped(0, remaining) if MOVIEPY_V2 else clip.subclip(0, remaining)
+                
+            processed_clips.append(clip)
+            current_time += clip.duration
+            
+        if processed_clips:
+            dest_video = os.path.join(public_dir, "current_broll.mp4")
+            
+            if len(processed_clips) == 1:
+                # If only one clip is needed, just copy it if it's long enough or render if trimmed
+                processed_clips[0].write_videofile(dest_video, fps=24, codec="libx264", audio=False, threads=2, preset="medium", logger=None)
+            else:
+                final_bg = safe_concatenate(processed_clips)
+                if final_bg:
+                    print(f"[REMOTION] Rendering composed background video ({final_bg.duration:.1f}s)...")
+                    final_bg.write_videofile(dest_video, fps=24, codec="libx264", audio=False, threads=2, preset="medium", logger=None)
+            
+            # Clean up
+            cleanup_clips(processed_clips)
+            
+            if os.path.exists(dest_video) and os.path.getsize(dest_video) > 1000:
+                bg_video_url = "current_broll.mp4"
+            else:
+                print("[REMOTION] Failed to generate concatenated bg video.")
             
     props = {
         "audioUrl": audio_url,
