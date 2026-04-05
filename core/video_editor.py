@@ -512,8 +512,6 @@ def stitch_video_remotion(audio_path: str, broll_paths: list, title: str, output
     out_path = os.path.join(OUTPUT_DIR, output_filename)
     out_abs = os.path.abspath(out_path).replace(os.sep, '/')
     
-    # Run npx remotion render
-    # It defaults to src/index.ts -> CaptionShort composition
     cmd = [
         "npx", "remotion", "render", 
         "src/index.ts", "CaptionShort",
@@ -521,14 +519,20 @@ def stitch_video_remotion(audio_path: str, broll_paths: list, title: str, output
         "--props", "props.json",
         "--frames", f"0-{frames}"
     ]
+    cmd_str = " ".join(cmd)
     
     try:
-        subprocess.run(cmd, cwd=remotion_dir, shell=True, check=True)
+        print(f"[REMOTION] Executing command: {cmd_str}")
+        # Run process, capturing output to see exactly why it failed if it does
+        result = subprocess.run(cmd_str, cwd=remotion_dir, shell=True, check=True, capture_output=True, text=True)
+        print(result.stdout)
         if os.path.exists(out_abs):
             print(f"[REMOTION] Successfully generated: {out_abs}")
             return out_abs
     except subprocess.CalledProcessError as e:
-        print(f"[REMOTION] ERROR during rendering: {e}")
+        print(f"[REMOTION] ERROR during rendering. Exit code: {e.returncode}")
+        print(f"[REMOTION] STDOUT:\n{e.stdout}")
+        print(f"[REMOTION] STDERR:\n{e.stderr}")
         
     return None
 
