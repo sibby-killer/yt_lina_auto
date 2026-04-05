@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { AbsoluteFill, useVideoConfig, useCurrentFrame, Audio, interpolate, spring, Video } from 'remotion';
+import { AbsoluteFill, useVideoConfig, useCurrentFrame, Audio, interpolate, spring, Video, staticFile } from 'remotion';
 
 interface SubtitleProps {
     start: number;
@@ -50,7 +50,7 @@ export const CaptionShort: React.FC<{
             {/* Scraped B-roll as base layer with low opacity */}
             {bgVideoUrl && (
                <AbsoluteFill>
-                   <Video src={bgVideoUrl} style={{ objectFit: 'cover', opacity: 0.3, width: '100%', height: '100%' }} />
+                   <Video src={staticFile(bgVideoUrl)} style={{ objectFit: 'cover', opacity: 0.3, width: '100%', height: '100%' }} />
                </AbsoluteFill>
             )}
 
@@ -66,7 +66,7 @@ export const CaptionShort: React.FC<{
             }} />
 
             {/* Audio Track */}
-            {audioUrl && <Audio src={audioUrl} />}
+            {audioUrl && <Audio src={staticFile(audioUrl)} />}
 
             {/* 1 Word Captions */}
             {currentWord ? (

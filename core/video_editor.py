@@ -505,7 +505,7 @@ def stitch_video_remotion(audio_path: str, broll_paths: list, title: str, output
     except Exception as e:
         print(f"[REMOTION] Failed to copy audio to public: {e}")
         
-    audio_url = "/current_audio.mp3"
+    audio_url = "current_audio.mp3"
     
     # 2. Copy background video to public folder (first valid broll)
     bg_video_url = ""
@@ -516,7 +516,7 @@ def stitch_video_remotion(audio_path: str, broll_paths: list, title: str, output
             if os.path.exists(dest_video):
                 os.remove(dest_video)
             shutil.copy(valid_brolls[0], dest_video)
-            bg_video_url = "/current_broll.mp4"
+            bg_video_url = "current_broll.mp4"
         except Exception as e:
             print(f"[REMOTION] Failed to copy broll to public: {e}")
             
