@@ -429,7 +429,7 @@ CRITICAL REQUIREMENTS:
 9. Voice must sound like a real human dictating a real secret, not an AI list
 
 ALSO PROVIDE:
-- A hyper-short, clickbait title of STRICTLY 1 to 3 WORDS MAX (e.g., "LIMIT YOUR AVAILABILITY", "SPOT A LIAR"). No hashtags in the title string.
+- A hyper-attractive, curiosity-driven title of STRICTLY 1 to 3 WORDS followed by EXACTLY 3 VIRAL HASHTAGS (e.g., "THE SHADOW TRICK #Psychology #Mental #Viral", "WHY THEY HATE YOU #Mindset #Secrets #Dark"). The title should be designed to make someone stop scrolling instantly.
 - A SEO-optimized description following the SHORT FORMAT in your system instructions (must include {{CREDITS_PLACEHOLDER}} exactly where credits go)
 - A unique pinned comment for this specific video topic
 - Exactly 5 b-roll search keywords for finding dark aesthetic anime or animated clips
@@ -437,7 +437,7 @@ ALSO PROVIDE:
 
 Return ONLY valid JSON:
 {{
-    "title": "1 TO 3 WORDS MAX",
+    "title": "CURIOSITY HOOK #Hashtag1 #Hashtag2 #Hashtag3",
     "description": "SEO-optimized short description following the SHORT FORMAT with {{CREDITS_PLACEHOLDER}} included #DarkPsychology #Manipulation",
     "script": "The complete flowing natural script with ... pauses throughout...",
     "topic_used": "{topic}",
@@ -724,7 +724,7 @@ ALSO PROVIDE:
 
 Return ONLY valid JSON:
 {{
-    "title": "Deep dive title here #DarkPsychology #MindGames",
+    "title": "Deep dive curiosity title #Dark #Psychology #Viral",
     "description": "SEO-optimized long description following the LONG FORMAT with {{CREDITS_PLACEHOLDER}} included",
     "script": "The full 1500-2000 word script flowing naturally with ... pauses...",
     "topic_used": "{topic}",

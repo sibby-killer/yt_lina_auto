@@ -58,15 +58,20 @@ def create_short(topic: str = None, progress_callback=None) -> bool:
 
     # ── 4. Assemble Video ──────────────────────────────────────────────────
     log("\n[4/5] Assembling Final MP4...")
-    safe_title = re.sub(r'[\\/*?:"<>|#]', "", content.get("title", "video")).strip().replace(" ", "_")
+    safe_title = re.sub(r'[\\/*?:"<>|]', "", content.get("title", "video")).strip().replace(" ", "_")
     output_filename = f"{safe_title[:40]}_final.mp4"
 
-    # Select random background music
+    # Select professional background music (prefer short-bg.mp3 for viral consistency)
     bg_music_path = None
     if os.path.exists(VID_BG_DIR):
-        music_files = [f for f in os.listdir(VID_BG_DIR) if f.endswith(".mp3")]
-        if music_files:
-            bg_music_path = os.path.join(VID_BG_DIR, random.choice(music_files))
+        if os.path.exists(os.path.join(VID_BG_DIR, "short-bg.mp3")):
+            bg_music_path = os.path.join(VID_BG_DIR, "short-bg.mp3")
+        else:
+            music_files = [f for f in os.listdir(VID_BG_DIR) if f.endswith(".mp3")]
+            if music_files:
+                bg_music_path = os.path.join(VID_BG_DIR, random.choice(music_files))
+        
+        if bg_music_path:
             log(f"Selected Professional BG Music: {os.path.basename(bg_music_path)}")
 
     final_video_path = stitch_video_remotion(

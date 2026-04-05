@@ -117,6 +117,31 @@ def safe_load_clip(filepath: str, target_size: tuple, target_ratio: float):
         except Exception as ce:
             print(f"[WARN] Crop failed for {filepath}: {ce}")
 
+        # ── BLUR STRIPS (Hide original captions) ───────────────────────────
+        # Add localized blur to top 10% and bottom 15% to mask scrapped text
+        try:
+            from moviepy.video.fx.all import gaussian_blur
+            w, h = target_size
+            
+            # Create blurred versions of the strips
+            # We use a simple composite to avoid full-frame blur overhead
+            h_top = int(h * 0.10)
+            h_bot = int(h * 0.15)
+            
+            # Crop the strips from the main clip
+            top_strip = clip.crop(y1=0, y2=h_top).fx(gaussian_blur, 15)
+            bot_strip = clip.crop(y1=h-h_bot, y2=h).fx(gaussian_blur, 15)
+            
+            # Put them back on top
+            from moviepy.editor import CompositeVideoClip
+            clip = CompositeVideoClip([
+                clip,
+                top_strip.set_position(('center', 0)),
+                bot_strip.set_position(('center', h-h_bot))
+            ])
+        except Exception as be:
+            print(f"[WARN] Blur failed for {filepath}: {be}")
+
         # Resize
         try:
             clip = clip.resized(target_size) if MOVIEPY_V2 else clip.resize(newsize=target_size)
@@ -173,7 +198,7 @@ def cleanup_clips(clips: list):
 #  AUDIO MIX VIA FFMPEG — bypasses moviepy CompositeAudioClip entirely
 # ─────────────────────────────────────────────────────────────────────────────
 def _mix_audio_ffmpeg(voice_path: str, music_path: str, output_path: str,
-                      total_duration: float, music_vol: float = 0.15) -> bool:
+                      total_duration: float, music_vol: float = 0.25) -> bool:
     """
     Mixes voiceover and background music using FFmpeg amix.
     - Voice is at 100% volume.
@@ -246,11 +271,11 @@ def stitch_video(audio_path: str, broll_paths: list, output_filename: str = "fin
     print(f"[ASSEMBLY] Total clip files received: {len(broll_paths)}")
 
     if orientation == "landscape":
-        target_size  = (1920, 1080)
-        target_ratio = 1920 / 1080.0
+        target_size  = (3840, 2160) # 4K Landscape
+        target_ratio = 3840 / 2160.0
     else:
-        target_size  = (1080, 1920)
-        target_ratio = 1080 / 1920.0
+        target_size  = (2160, 3840) # 4K Vertical
+        target_ratio = 2160 / 3840.0
 
     print(f"[ASSEMBLY] Target resolution: {target_size[0]}x{target_size[1]}")
 
@@ -514,13 +539,14 @@ def stitch_video_remotion(audio_path: str, broll_paths: list, title: str, output
         print(f"[REMOTION] Validating and trimming {len(valid_paths)} clips for background...")
         processed_clips = []
         current_time = 0
-        target_ratio = 1080 / 1920.0
+        target_size = (2160, 3840)
+        target_ratio = 2160 / 3840.0
         
         for path in valid_paths:
             if current_time >= duration:
                 break
                 
-            clip = safe_load_clip(path, (1080, 1920), target_ratio)
+            clip = safe_load_clip(path, target_size, target_ratio)
             if not clip:
                 continue
                 

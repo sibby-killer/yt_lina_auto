@@ -104,10 +104,10 @@ export const CaptionShort: React.FC<{
                     textShadow: '0px 0px 20px rgba(0,0,0,0.8)'
                 }}>
                     <span style={{
-                        background: 'rgba(255, 42, 42, 0.85)',
+                        background: 'rgba(0, 71, 171, 0.85)', // High-prestige Deep Blue
                         padding: '10px 40px',
                         borderRadius: '4px',
-                        boxShadow: '0px 10px 30px rgba(0,0,0,0.5)'
+                        boxShadow: '0px 10px 30px rgba(0,71,171,0.5)'
                     }}>
                         {title}
                     </span>
@@ -143,7 +143,7 @@ export const CaptionShort: React.FC<{
                     </span>
                     {currentChunkInfo.words[1] && (
                         <span style={{ 
-                            color: '#ff2a2a', // High energy red accent
+                            color: '#39FF14', // High-velocity Neon Green
                             textShadow: '0px 15px 40px rgba(0,0,0,0.9), 0px 5px 10px rgba(0,0,0,0.8)' 
                         }}>
                             {currentChunkInfo.words[1]}
